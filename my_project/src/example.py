@@ -6,3 +6,4 @@ Created on Nov 6, 2017
 i = "hello"
 if (i == "hello"):
     print(i)
+print("AVLTree is evil")
