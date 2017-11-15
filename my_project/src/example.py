@@ -4,6 +4,7 @@ Created on Nov 6, 2017
 @author: joely
 '''
 import json
+import request
 
 i = "hello"
 if (i == "hello"):
