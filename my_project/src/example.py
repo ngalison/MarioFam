@@ -24,7 +24,10 @@ print(response.status_code)
 
 parameters = {"lat": 40.71, "lon": -74}
 response = requests.get("http://api.open-notify.org/iss-pass.json", params=parameters)
-print(response.content)
+print("cool" + response.content)
 # these two should give the same thing
 response = requests.get("http://api.open-notify.org/iss-pass.json?lat=40.71&lon=-74")
 print(response.content)
+
+people = requests.get("http://api.open-notify.org/astros.json")
+print(people)
