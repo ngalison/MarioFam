@@ -13,3 +13,13 @@ json = boundingbox.json()
 print(json)
 for el in json['features'] :
     print(el['properties'])
+    
+#pseudocode 
+#get the data coordinates from the user's cellphone - longitude and latitude 
+#create a bounding box from that is 50 meters of all 4 directions of the longitude and latitude 
+#call the maillary api to get the information 
+#go through each "feature" of the resulting json object.  
+#check and see if the data is > 5 years old.  if it is then it's a "bad photo" and treat it like it's
+#all bad.
+#create some type of density map that would tell us which areas have a low density of photos
+#chooses a low density point and returns that location to the user
