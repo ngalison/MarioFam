@@ -15,7 +15,7 @@ for el in json['features'] :
     print(el['properties'])
     
 #pseudocode 
-#get the data coordinates from the user's cellphone - longitude and latitude 
+#get the data coordinates from the user's cellphone/ computer/ just a hardcoded location - longitude and latitude 
 #create a bounding box from that is 50 meters of all 4 directions of the longitude and latitude 
 #call the maillary api to get the information 
 #go through each "feature" of the resulting json object.  
