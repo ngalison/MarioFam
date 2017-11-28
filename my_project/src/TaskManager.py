@@ -15,16 +15,21 @@ print('Listed below are all of the major buildings in the UW area.')
 for word in sorted(coordinates.keys()):
     print(word)
 
-userInput = ''    
+userInput = '' 
+distance = 0.0000   
 try:
     userInput = coordinates[input('Enter the building you are closest to: ')]
 except KeyError:
     print('Bad Input: Check for spelling or building eligibility')
+
+try:
+    distance = float(input('How far are you willing to walk in terms of miles? Just enter the number. (ex: 0.1, 1.0. 2.0): '))
+except ValueError:
+    print('Bad Input: Enter a numeric value')
    
 print(userInput)
 
-'Offset is currently set to 0.0029 degrees = 0.2 miles'
-offset = 0.0029
+offset = 0.00145 / (distance / 0.1)
 lowery = userInput[0] - offset
 uppery = userInput[0] + offset
 lowerx = userInput[1] - offset
