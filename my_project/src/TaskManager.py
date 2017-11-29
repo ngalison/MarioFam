@@ -31,7 +31,7 @@ while(distance == 0):
    
 print(userInput)
 
-offset = 0.00145 / (distance / 0.1)
+offset = 0.00145 * (distance / 0.1)
 lowery = userInput[0] - offset
 uppery = userInput[0] + offset
 lowerx = userInput[1] - offset
