@@ -35,3 +35,11 @@ requestString += "&client_id=" + clientID
 print(requestString)
 boundingbox = requests.get(requestString);
 print(boundingbox.json())
+
+'Now separate into the list of coordinates'
+featureList = boundingbox.json()['features']
+points = []
+for feature in featureList:
+    points.append(feature['geometry']['coordinates'])
+    
+print(points)
