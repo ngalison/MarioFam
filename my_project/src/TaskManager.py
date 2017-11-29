@@ -6,8 +6,8 @@ Created on Nov 27, 2017
 
 import requests
 #hardcoded dictionary that contains all of the locations we have as well as the coordinates 
-#clientID = "djgzd3RYazV0V0hGaERkMl9KUGF3UToxYjI4NGMxNTEzMmI2NDVl" #ours
-clientID = "TG1sUUxGQlBiYWx2V05NM0pQNUVMQTo2NTU3NTBiNTk1NzM1Y2U2" #theirs
+clientID = "djgzd3RYazV0V0hGaERkMl9KUGF3UToxYjI4NGMxNTEzMmI2NDVl" #ours
+#clientID = "TG1sUUxGQlBiYWx2V05NM0pQNUVMQTo2NTU3NTBiNTk1NzM1Y2U2" #theirs
 #clientID = "NzkwYjA2MjI2NGExYjZlODRlMzhiMDdiNzQ5Yjg0ZTU" #our secret
 
 coordinates = {'Drumheller Fountain':[47.653768, -122.307778], 'Mary Gates Hall':[47.655000, -122.308058], 'HUB':[47.655577, -122.305074], 'Red Square':[47.656006, -122.309493], 'Quad':[47.657276, -122.307136], 'IMA':[47.653561595258594, -122.30112433433533], 'Rainier Vista':[47.652243, -122.306728], 'U Village':[47.663177, -122.298192], 'UW Bookstore':[47.660420, -122.312795],'CSE':[47.653444, -122.305999], 'Husky Stadium':[47.650551433765905, -122.30251908302307], 'Burke Museum':[47.660675, -122.310399], 'UW Medical Center':[47.649930, -122.308211], 'West Campus':[47.656094621927, -122.3147714138031], 'North Campus':[47.66022814193434, -122.3051691055298], 'Broken Island':[47.649719, -122.298234] }
@@ -15,16 +15,23 @@ print('Listed below are all of the major buildings in the UW area.')
 for word in sorted(coordinates.keys()):
     print(word)
 
-userInput = ''    
-try:
-    userInput = coordinates[input('Enter the building you are closest to: ')]
-except KeyError:
-    print('Bad Input: Check for spelling or building eligibility')
+userInput = '' 
+distance = 0.0000
+while(len(userInput) == 0):
+	try:
+	    	userInput = coordinates[input('Enter the building you are closest to: ')]
+	except KeyError:
+		    print('Bad Input: Check for spelling or building eligibility')
+
+while(distance == 0):
+	try:
+    		distance = float(input('How far are you willing to walk in terms of miles? Just enter the number. (ex: 0.1, 1.0. 2.0): '))
+	except ValueError:
+    		print('Bad Input: Enter a numeric value')
    
 print(userInput)
 
-'Offset is currently set to 0.0029 degrees = 0.2 miles'
-offset = 0.0029
+offset = 0.00145 * (distance / 0.1)
 lowery = userInput[0] - offset
 uppery = userInput[0] + offset
 lowerx = userInput[1] - offset
