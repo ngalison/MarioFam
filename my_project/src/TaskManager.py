@@ -17,20 +17,22 @@ for word in sorted(coordinates.keys()):
     print(word)
 
 userInput = '' 
-distance = 0.0000   
-try:
-    userInput = coordinates[input('Enter the building you are closest to: ')]
-except KeyError:
-    print('Bad Input: Check for spelling or building eligibility')
+distance = 0.0000
+while(len(userInput) == 0):
+    try:
+        userInput = coordinates[input('Enter the building you are closest to: ')]
+    except KeyError:
+            print('Bad Input: Check for spelling or building eligibility')
 
-try:
-    distance = float(input('How far are you willing to walk in terms of miles? Just enter the number. (ex: 0.1, 1.0. 2.0): '))
-except ValueError:
-    print('Bad Input: Enter a numeric value')
+while(distance == 0):
+    try:
+            distance = float(input('How far are you willing to walk in terms of miles? Just enter the number. (ex: 0.1, 1.0. 2.0): '))
+    except ValueError:
+        print('Bad Input: Enter a numeric value')
    
 print(userInput)
 
-offset = 0.00145 / (distance / 0.1)
+offset = 0.00145 * (distance / 0.1)
 lowery = userInput[0] - offset
 uppery = userInput[0] + offset
 lowerx = userInput[1] - offset
@@ -41,3 +43,11 @@ requestString += "&client_id=" + clientID
 print(requestString)
 boundingbox = requests.get(requestString);
 print(boundingbox.json())
+
+'Now separate into the list of coordinates'
+featureList = boundingbox.json()['features']
+points = []
+for feature in featureList:
+    points.append(feature['geometry']['coordinates'])
+    
+print("Found " + str(len(points)) + " points: " + str(points))
