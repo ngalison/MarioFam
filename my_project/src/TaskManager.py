@@ -5,6 +5,7 @@ Created on Nov 27, 2017
 '''
 
 import requests
+
 #hardcoded dictionary that contains all of the locations we have as well as the coordinates 
 clientID = "djgzd3RYazV0V0hGaERkMl9KUGF3UToxYjI4NGMxNTEzMmI2NDVl" #ours
 #clientID = "TG1sUUxGQlBiYWx2V05NM0pQNUVMQTo2NTU3NTBiNTk1NzM1Y2U2" #theirs
