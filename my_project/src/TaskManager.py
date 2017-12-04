@@ -40,9 +40,9 @@ upperx = userInput[0] + offset
 
 requestString = "https://a.mapillary.com/v3/images/?bbox=" + str(lowerx) + "," + str(lowery) + "," + str(upperx) + "," + str(uppery)
 requestString += "&client_id=" + clientID
-print(requestString)
+#print(requestString)
 boundingbox = requests.get(requestString);
-print(boundingbox.json())
+#print(boundingbox.json())
 
 'Now separate into the list of coordinates'
 featureList = boundingbox.json()['features']
