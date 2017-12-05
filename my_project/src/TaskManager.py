@@ -40,7 +40,6 @@ requestString += "&client_id=" + clientID
 print(requestString)
 boundingbox = requests.get(requestString);
 #print(boundingbox.json())
-
 'Now separate into the list of coordinates'
 featureList = boundingbox.json()['features']
 points = []
@@ -50,9 +49,9 @@ for feature in featureList:
 print("Found " + str(len(points)) + " points: " + str(points))
 
 'Given the points and the bounding box, place each point into the dictionary'
-'For now, use a dictionary with indices 0-9, this is where code to calculate number of subdivisions would go'
+'For now, use a dictionary with indices 1-9, this is where code to calculate number of subdivisions would go'
 subdivisions = 9
-regionToPoints = data = {k: [] for k in range(1, subdivisions + 1)}
+regionToPoints = data = {k: [] for k in range(1, subdivisions)}
 
 for point in points:
     mapping = bb.find_region(point, subdivisions)
@@ -64,7 +63,6 @@ for k, v in regionToPoints.items():
     for point in v:
         #Ensure that the points were properly mapped, can be commented out for better runtime
         assert(point.inBox(bb.indexToBox[k]))
-
 
 
 '''
