@@ -23,13 +23,13 @@ userInput = ''
 distance = 0.0000
 while(len(userInput) == 0):
     try:
-        userInput = coordinates[input('Enter the building you are closest to: ')]
+        userInput = coordinates[input('Enter the building you are closest to: ').strip()]
     except KeyError:
             print('Bad Input: Check for spelling or building eligibility')
 
 while(distance == 0):
     try:
-            distance = float(input('How far are you willing to walk in terms of miles? Just enter the number. (ex: 0.1, 1.0. 2.0): '))
+            distance = float(input('How far are you willing to walk in terms of miles? Just enter the number. (ex: 0.1, 1.0. 2.0): ').strip())
     except ValueError:
         print('Bad Input: Enter a numeric value')
    
@@ -61,19 +61,19 @@ for point in points:
 i = 1
 'User is currently standing in box 5.  We want to check the block directly next to them, meaning boxes 2,4,6,8'
 'for the lowest density'
-
 minimum = sys.maxsize
 block = -1
 for k, v in regionToPoints.items():
     print(str(k) + ":" + str(len(v)))
     if(k % 2 == 0 & len(v) < minimum):
-        min = len(v)
+        minimum = len(v)
         block = k
+        print(str(block) + " " + str(minimum))
     for point in v:
         #Ensure that the points were properly mapped, can be commented out for better runtime
         assert(point.inBox(bb.indexToBox[k]))
 
-
+print(block)
 #if (len(v) > 0):
 #    print(bb.get_region_bounds(i, v[0], subdivisions))
 #    print(v[0])
