@@ -6,8 +6,8 @@ Created on Nov 27, 2017
 
 import requests
 import sys
-from src.point import Point
-from src.boundingbox import BoundingBox
+from point import Point
+from boundingbox import BoundingBox
 
 #hardcoded dictionary that contains all of the locations we have as well as the coordinates 
 clientID = "djgzd3RYazV0V0hGaERkMl9KUGF3UToxYjI4NGMxNTEzMmI2NDVl" #ours
@@ -72,7 +72,8 @@ for k, v in regionToPoints.items():
         #Ensure that the points were properly mapped, can be commented out for better runtime
         assert(point.inBox(bb.indexToBox[k]))
 
-print(block)
+bbCoordinates = bb.indexToBox[block]
+print(bbCoordinates)
 #if (len(v) > 0):
 #    print(bb.get_region_bounds(i, v[0], subdivisions))
 #    print(v[0])
