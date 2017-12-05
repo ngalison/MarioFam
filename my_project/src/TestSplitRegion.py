@@ -4,8 +4,8 @@ Created on Dec 4, 2017
 @author: Marcus
 '''
 import math
-from src.point import Point
-from src.boundingbox import BoundingBox
+from point import Point
+from boundingbox import BoundingBox
 
 # Given a bounding box, number of subdivisions, and point p, returns the region it would belong to
 # Assumes subdivisions is a perfect square.
