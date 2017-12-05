@@ -10,7 +10,7 @@ boundingbox = requests.get("https://a.mapillary.com/v3/images/?lookat=12.9981086
 print(boundingbox.status_code)
 
 json = boundingbox.json()
-print(json)
+print(json) 
 for el in json['features'] :
     print(el['properties'])
     
