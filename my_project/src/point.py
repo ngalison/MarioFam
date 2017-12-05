@@ -15,6 +15,10 @@ class Point:
     def fromList(cls, li):
         return cls(li[0], li[1])
     
+    #Returns whether this point is in the specified bounding box.
+    def inBox(self, bb):
+        return (bb.lowerx <= self.x <= bb.upperx) & (bb.lowery <= self.y <= bb.uppery)
+    
     def __str__(self):
         return "(" + str(self.x) + ", " + str(self.y) + ")"
     

@@ -61,8 +61,12 @@ for point in points:
 i = 1
 for k, v in regionToPoints.items():
     print(str(k) + ":" + str(len(v)))
+    for point in v:
+        #Ensure that the points were properly mapped, can be commented out for better runtime
+        assert(point.inBox(bb.indexToBox[k]))
 
-print(bb.indexToBox)
+
+
 '''
 if (len(v) > 0):
     print(bb.get_region_bounds(i, v[0], subdivisions))

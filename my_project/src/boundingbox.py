@@ -38,7 +38,7 @@ class BoundingBox:
         for i in range(numRows):
             currentx = self.lowerx
             for j in range(numRows):
-                self.indexToBox[3 * i + j] = BoundingBox(currentx, currenty, currentx + deltax, currenty + deltay)
+                self.indexToBox[1 + 3 * i + j] = BoundingBox(currentx, currenty, currentx + deltax, currenty + deltay)
                 currentx += deltax
             currenty += deltay
         
