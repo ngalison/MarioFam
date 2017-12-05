@@ -4,7 +4,7 @@ Created on Dec 4, 2017
 @author: Marcus
 '''
 import math
-from src.point import Point
+from point import Point
 
 class BoundingBox:
     # Initialize bounding box directly
