@@ -8,7 +8,7 @@ from point import Point
 from boundingbox import BoundingBox
 
 # Given a bounding box, number of subdivisions, and point p, returns the region it would belong to
-# Assumes subdivisions is a perfect square.
+# Assumes subdivisions is a perfect square...
 def find_region(p, bb, subdivisions):
     numRows = int(math.sqrt(subdivisions))
     deltax = (bb.upperx - bb.lowerx) / numRows
