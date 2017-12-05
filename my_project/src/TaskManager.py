@@ -5,6 +5,8 @@ Created on Nov 27, 2017
 '''
 
 import requests
+from src.point import Point
+from src.boundingbox import BoundingBox
 
 #hardcoded dictionary that contains all of the locations we have as well as the coordinates 
 clientID = "djgzd3RYazV0V0hGaERkMl9KUGF3UToxYjI4NGMxNTEzMmI2NDVl" #ours
@@ -32,15 +34,10 @@ while(distance == 0):
    
 print(userInput)
 
-offset = 0.00145 * (distance / 0.1)
-lowery = userInput[1] - offset
-uppery = userInput[1] + offset
-lowerx = userInput[0] - offset
-upperx = userInput[0] + offset
-
-requestString = "https://a.mapillary.com/v3/images/?bbox=" + str(lowerx) + "," + str(lowery) + "," + str(upperx) + "," + str(uppery)
+bb = BoundingBox.fromPoint(Point.fromList(userInput), distance)
+requestString = "https://a.mapillary.com/v3/images/?bbox=" + str(bb.lowerx) + "," + str(bb.lowery) + "," + str(bb.upperx) + "," + str(bb.uppery)
 requestString += "&client_id=" + clientID
-#print(requestString)
+print(requestString)
 boundingbox = requests.get(requestString);
 #print(boundingbox.json())
 
@@ -48,6 +45,27 @@ boundingbox = requests.get(requestString);
 featureList = boundingbox.json()['features']
 points = []
 for feature in featureList:
-    points.append(feature['geometry']['coordinates'])
+    points.append(Point.fromList((feature['geometry']['coordinates'])))
     
 print("Found " + str(len(points)) + " points: " + str(points))
+
+'Given the points and the bounding box, place each point into the dictionary'
+'For now, use a dictionary with indices 0-9, this is where code to calculate number of subdivisions would go'
+subdivisions = 9
+regionToPoints = data = {k: [] for k in range(1, subdivisions + 1)}
+
+for point in points:
+    mapping = bb.find_region(point, subdivisions)
+    regionToPoints[mapping].append(point)
+
+i = 1
+for k, v in regionToPoints.items():
+    print(str(k) + ":" + str(len(v)))
+
+print(bb.indexToBox)
+'''
+if (len(v) > 0):
+    print(bb.get_region_bounds(i, v[0], subdivisions))
+    print(v[0])
+i += 1
+'''
