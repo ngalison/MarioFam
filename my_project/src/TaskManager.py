@@ -61,8 +61,8 @@ for point in points:
 i = 1
 'User is currently standing in box 5.  We want to check the block directly next to them, meaning boxes 2,4,6,8'
 'for the lowest density'
-minimum = sys.maxsize
-block = -1
+minimum = len(regionToPoints[5])
+block = 5
 for k, v in regionToPoints.items():
     print(str(k) + ":" + str(len(v)))
     if(k % 2 == 0 & len(v) < minimum):
