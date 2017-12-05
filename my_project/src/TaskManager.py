@@ -52,7 +52,7 @@ print("Found " + str(len(points)) + " points: " + str(points))
 'Given the points and the bounding box, place each point into the dictionary'
 'For now, use a dictionary with indices 1-9, this is where code to calculate number of subdivisions would go'
 subdivisions = 9
-regionToPoints = data = {k: [] for k in range(1, subdivisions)}
+regionToPoints = data = {k: [] for k in range(1, subdivisions+1)}
 
 for point in points:
     mapping = bb.find_region(point, subdivisions)
@@ -68,7 +68,6 @@ for k, v in regionToPoints.items():
     if(k % 2 == 0 & len(v) < minimum):
         minimum = len(v)
         block = k
-        print(str(block) + " " + str(minimum))
     for point in v:
         #Ensure that the points were properly mapped, can be commented out for better runtime
         assert(point.inBox(bb.indexToBox[k]))
