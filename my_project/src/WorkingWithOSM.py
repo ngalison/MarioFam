@@ -10,6 +10,7 @@ def returnFootpaths(slat, slon, nlat, nlon):
 	print("{")
 	print("\"type\": \"FeatureCollection\",")
 	print("\"features\": [")
+	count = 0;
 	for way in footpaths:
 		print("{")
 		print("\"type\": \"Feature\",")
@@ -18,8 +19,12 @@ def returnFootpaths(slat, slon, nlat, nlon):
 		print("\"coordinates\": [" + str(way.nodes[0].lon) + ", " + str(way.nodes[0].lat) + "]") #come back to this, not finished
 		print("},")
 		print("\"properties\": {}")
-		print("},") #take out last one's comma
+		if count == len(footpaths) - 1:
+			print("}") #take out last one's comma
+		else:
+			print("},")
 		print()
+		count = count + 1
 	print("]")
 	print("}")
 		
