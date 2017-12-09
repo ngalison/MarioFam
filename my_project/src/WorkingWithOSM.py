@@ -1,12 +1,20 @@
 from osmapi import OsmApi
 import overpy
 import overpass
+from boundingbox import BoundingBox
 
-
-def returnFootpaths(slat, slon, nlat, nlon):
+def returnFootpaths(bb):
+	slat = bb.lowery;
+	slon = bb.lowerx;
+	nlat = bb.uppery;
+	nlon = bb.upperx;
+	
 	api = overpy.Overpass()	
 	result = api.query(" [bbox: " + str(slat) +", " + str(slon) + ", " + str(nlat) + ", " + str(nlon) + "]; (way[highway=footway]; way[highway=pedestrian]; way[foot=yes]; way[footway=sidewalk] ); /*added by auto repair*/ (._;>;); /*end of auto repair*/ out;")
 	footpaths = result.ways
+	
+	#f = open("geojson.txt", "w+")
+	
 	print("{")
 	print("\"type\": \"FeatureCollection\",")
 	print("\"features\": [")
@@ -28,6 +36,7 @@ def returnFootpaths(slat, slon, nlat, nlon):
 	print("]")
 	print("}")
 		
-returnFootpaths(47.65436866666667, -122.30628233333334,47.65678533333334,  -122.30386566666668)
+#returnFootpaths(47.65436866666667, -122.30628233333334,47.65678533333334,  -122.30386566666668)
+returnFootpaths(BoundingBox(-122.30628233333334, 47.65436866666667, -122.30386566666668, 47.65678533333334))
 
 
