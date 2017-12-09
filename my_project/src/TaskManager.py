@@ -76,7 +76,7 @@ for k, v in regionToPoints.items():
 bbCoordinates = bb.indexToBox[block]
 print(bbCoordinates)
 
-print("Printing GeoJSON for this bounding box...")
+print("Saving GeoJSON for this bounding box in geojson.txt...")
 returnFootpaths(bbCoordinates)
 #if (len(v) > 0):
 #    print(bb.get_region_bounds(i, v[0], subdivisions))
