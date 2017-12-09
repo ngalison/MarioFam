@@ -74,7 +74,8 @@ for k, v in regionToPoints.items():
         assert(point.inBox(bb.indexToBox[k]))
 
 bbCoordinates = bb.indexToBox[block]
-print(bbCoordinates)
+print("Sub-bounding box at index " + str(block) + ": " + str(bbCoordinates))
+
 
 print("Saving GeoJSON for this bounding box in geojson.txt...")
 returnFootpaths(bbCoordinates)
