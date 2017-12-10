@@ -1,6 +1,5 @@
 '''
 Created on Nov 27, 2017
-
 @author: alisonng
 '''
 
@@ -78,8 +77,11 @@ bbCoordinates = bb.indexToBox[block]
 print("Sub-bounding box at index " + str(block) + ": " + str(bbCoordinates))
 
 
-print("Saving GeoJSON for this bounding box in geojson.txt...")
-returnFootpathsLineString(bbCoordinates)
+print("Saving GeoJSON for points in points.txt...")
+returnFootpathsPoint(bbCoordinates, "points.txt")
+
+print("Saving GeoJSON for linestring in linestring.txt...")
+returnFootpathsLineString(bbCoordinates, "linestring.txt")
 #if (len(v) > 0):
 #    print(bb.get_region_bounds(i, v[0], subdivisions))
 #    print(v[0])
