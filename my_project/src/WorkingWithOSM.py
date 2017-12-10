@@ -3,7 +3,7 @@ import overpy
 import overpass
 from boundingbox import BoundingBox
 
-def returnFootpathsPoint(bb):
+def returnFootpathsPoint(bb, filename):
 	slat = bb.lowery;
 	slon = bb.lowerx;
 	nlat = bb.uppery;
@@ -13,7 +13,7 @@ def returnFootpathsPoint(bb):
 	result = api.query(" [bbox: " + str(slat) +", " + str(slon) + ", " + str(nlat) + ", " + str(nlon) + "]; (way[highway=footway]; way[highway=pedestrian]; way[foot=yes]; way[footway=sidewalk] ); /*added by auto repair*/ (._;>;); /*end of auto repair*/ out;")
 	footpaths = result.ways
 	
-	f = open("geojson.txt", "w+")
+	f = open(filename, "w+")
 	
 	f.write("{\n")
 	
@@ -38,7 +38,7 @@ def returnFootpathsPoint(bb):
 	f.write("}\n")
 
 
-def returnFootpathsLineString(bb):
+def returnFootpathsLineString(bb, filename):
 	slat = bb.lowery;
 	slon = bb.lowerx;
 	nlat = bb.uppery;
@@ -48,7 +48,7 @@ def returnFootpathsLineString(bb):
 	result = api.query(" [bbox: " + str(slat) +", " + str(slon) + ", " + str(nlat) + ", " + str(nlon) + "]; (way[highway=footway]; way[highway=pedestrian]; way[foot=yes]; way[footway=sidewalk] ); /*added by auto repair*/ (._;>;); /*end of auto repair*/ out;")
 	footpaths = result.ways
 	
-	f = open("geojson.txt", "w+")
+	f = open(filename, "w+")
 	
 	f.write("{\n")
 	
