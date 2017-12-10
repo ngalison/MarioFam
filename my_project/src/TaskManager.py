@@ -55,6 +55,8 @@ print("Found " + str(len(points)) + " points: " + str(points))
 subdivisions = 9
 regionToPoints = data = {k: [] for k in range(1, subdivisions+1)}
 
+if (not points):
+    bb.find_region(Point(bb.lowerx, bb.lowery), subdivisions)
 for point in points:
     mapping = bb.find_region(point, subdivisions)
     regionToPoints[mapping].append(point)
@@ -64,6 +66,7 @@ i = 1
 'for the lowest density'
 minimum = len(regionToPoints[5])
 block = 5
+print("Listing dictionary from index to number of Points")
 for k, v in regionToPoints.items():
     print(str(k) + ":" + str(len(v)))
     if(k % 2 == 0 & len(v) < minimum):
@@ -74,7 +77,7 @@ for k, v in regionToPoints.items():
         assert(point.inBox(bb.indexToBox[k]))
 
 bbCoordinates = bb.indexToBox[block]
-print("Sub-bounding box at index " + str(block) + ": " + str(bbCoordinates))
+print("Passing BoundingBox at index " + str(block) + " into Overpass: " + str(bbCoordinates))
 
 
 print("Saving GeoJSON for points in points.txt...")
