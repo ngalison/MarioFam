@@ -8,7 +8,8 @@ import requests
 import sys
 from point import Point
 from boundingbox import BoundingBox
-from WorkingWithOSM import returnFootpaths
+from WorkingWithOSM import returnFootpathsPoint
+from WorkingWithOSM import returnFootpathsLineString
 
 #hardcoded dictionary that contains all of the locations we have as well as the coordinates 
 clientID = "djgzd3RYazV0V0hGaERkMl9KUGF3UToxYjI4NGMxNTEzMmI2NDVl" #ours
@@ -78,7 +79,7 @@ print("Sub-bounding box at index " + str(block) + ": " + str(bbCoordinates))
 
 
 print("Saving GeoJSON for this bounding box in geojson.txt...")
-returnFootpaths(bbCoordinates)
+returnFootpathsLineString(bbCoordinates)
 #if (len(v) > 0):
 #    print(bb.get_region_bounds(i, v[0], subdivisions))
 #    print(v[0])
