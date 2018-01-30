@@ -17,9 +17,9 @@ coordinates = {'Drumheller Fountain':[-122.307778 ,47.653768], 'Mary Gates Hall'
 def main():
     coordPair = coordinates['Husky Stadium']
     distance = 0.5
-    analyseRegion(coordPair, distance)
+    analyseRegion(coordPair, distance, 0)
     
-def analyseRegion(coordinates, distance):
+def analyseRegion(coordinates, distance, count):
     bb = BoundingBox.fromPoint(Point.fromList(coordinates), distance)
     requestString = "https://a.mapillary.com/v3/images/?bbox=" + str(bb.lowerx) + "," + str(bb.lowery) + "," + str(bb.upperx) + "," + str(bb.uppery)
     requestString += "&client_id=" + clientID
@@ -62,6 +62,13 @@ def analyseRegion(coordinates, distance):
     
     print("Saving GeoJSON for linestring in linestring.txt...")
     returnFootpathsLineString(bbCoordinates, "linestring.txt")
+	
+'	ATTEMPTING TO CALL ANALYSE REGION AGAIN!
+'	count = count + 1
+'	if (count < 2):
+'		xCoord = bbCoordinates
+'		analyseRegion(
+'	
 
 if __name__ == "__main__":
     main()
