@@ -15,6 +15,7 @@ clientID = "djgzd3RYazV0V0hGaERkMl9KUGF3UToxYjI4NGMxNTEzMmI2NDVl"
 coordinates = {'Drumheller Fountain':[-122.307778 ,47.653768], 'Mary Gates Hall':[-122.308058,47.655000], 'HUB':[-122.305074, 47.655577], 'Red Square':[-122.309493, 47.656006], 'Quad':[-122.307136,47.657276], 'IMA':[-122.30112433433533,47.653561595258594], 'Rainier Vista':[-122.306728, 47.652243], 'U Village':[ -122.298192,47.663177], 'UW Bookstore':[-122.312795,47.660420],'CSE':[-122.305999,47.653444], 'Husky Stadium':[-122.30251908302307,47.650551433765905], 'Burke Museum':[-122.310399,47.660675], 'UW Medical Center':[-122.308211,47.649930], 'West Campus':[-122.3147714138031,47.656094621927], 'North Campus':[-122.3051691055298,47.66022814193434], 'Broken Island':[-122.298234,47.649719] }
 
 def main():
+	'dont forget to change this or itll always start at Husky Stadium'
     coordPair = coordinates['Husky Stadium']
     distance = 0.5
     analyseRegion(coordPair, distance, 0)
@@ -56,19 +57,12 @@ def analyseRegion(coordinates, distance, count):
     
     bbCoordinates = bb.indexToBox[block]
     print("Passing BoundingBox at index " + str(block) + " into Overpass: " + str(bbCoordinates))
-       
+    
     print("Saving GeoJSON for points in points.txt...")
     returnFootpathsPoint(bbCoordinates, "points.txt")
     
     print("Saving GeoJSON for linestring in linestring.txt...")
     returnFootpathsLineString(bbCoordinates, "linestring.txt")
-	
-'	ATTEMPTING TO CALL ANALYSE REGION AGAIN!
-'	count = count + 1
-'	if (count < 2):
-'		xCoord = bbCoordinates
-'		analyseRegion(
-'	
 
 if __name__ == "__main__":
     main()
