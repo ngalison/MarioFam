@@ -7,18 +7,38 @@ import requests
 import sys
 from point import Point
 from boundingbox import BoundingBox
-from WorkingWithOSM import returnFootpathsPoint
-from WorkingWithOSM import returnFootpathsLineString
+from WorkingWithOSM2 import returnFootpathsPoint
+from WorkingWithOSM2 import returnFootpathsLineString
 
 clientID = "djgzd3RYazV0V0hGaERkMl9KUGF3UToxYjI4NGMxNTEzMmI2NDVl"
 
-coordinates = {'Drumheller Fountain':[-122.307778 ,47.653768], 'Mary Gates Hall':[-122.308058,47.655000], 'HUB':[-122.305074, 47.655577], 'Red Square':[-122.309493, 47.656006], 'Quad':[-122.307136,47.657276], 'IMA':[-122.30112433433533,47.653561595258594], 'Rainier Vista':[-122.306728, 47.652243], 'U Village':[ -122.298192,47.663177], 'UW Bookstore':[-122.312795,47.660420],'CSE':[-122.305999,47.653444], 'Husky Stadium':[-122.30251908302307,47.650551433765905], 'Burke Museum':[-122.310399,47.660675], 'UW Medical Center':[-122.308211,47.649930], 'West Campus':[-122.3147714138031,47.656094621927], 'North Campus':[-122.3051691055298,47.66022814193434], 'Broken Island':[-122.298234,47.649719] }
+#coordinates = {'Drumheller Fountain':[-122.307778 ,47.653768], 'Mary Gates Hall':[-122.308058,47.655000], 'HUB':[-122.305074, 47.655577], 'Red Square':[-122.309493, 47.656006], 'Quad':[-122.307136,47.657276], 'IMA':[-122.30112433433533,47.653561595258594], 'Rainier Vista':[-122.306728, 47.652243], 'U Village':[ -122.298192,47.663177], 'UW Bookstore':[-122.312795,47.660420],'CSE':[-122.305999,47.653444], 'Husky Stadium':[-122.30251908302307,47.650551433765905], 'Burke Museum':[-122.310399,47.660675], 'UW Medical Center':[-122.308211,47.649930], 'West Campus':[-122.3147714138031,47.656094621927], 'North Campus':[-122.3051691055298,47.66022814193434], 'Broken Island':[-122.298234,47.649719] }
 
 def main():
-	'dont forget to change this or itll always start at Husky Stadium'
-    coordPair = coordinates['Husky Stadium']
-    distance = 0.5
-    analyseRegion(coordPair, distance, 0)
+    coordinates = {'Drumheller Fountain':[-122.307778 ,47.653768], 'Mary Gates Hall':[-122.308058,47.655000], 'HUB':[-122.305074, 47.655577], 'Red Square':[-122.309493, 47.656006], 'Quad':[-122.307136,47.657276], 'IMA':[-122.30112433433533,47.653561595258594], 'Rainier Vista':[-122.306728, 47.652243], 'U Village':[ -122.298192,47.663177], 'UW Bookstore':[-122.312795,47.660420],'CSE':[-122.305999,47.653444], 'Husky Stadium':[-122.30251908302307,47.650551433765905], 'Burke Museum':[-122.310399,47.660675], 'UW Medical Center':[-122.308211,47.649930], 'West Campus':[-122.3147714138031,47.656094621927], 'North Campus':[-122.3051691055298,47.66022814193434], 'Broken Island':[-122.298234,47.649719] }
+    print('Listed below are all of the major buildings in the UW area.')
+    for word in sorted(coordinates.keys()):
+        print(word)
+
+    userInput = '' 
+    distance = 0.0000
+    while(len(userInput) == 0):
+        try:
+            userInput = coordinates[input('Enter the building you are closest to: ').strip()]
+        except KeyError:
+                print('Bad Input: Check for spelling or building eligibility')
+
+    while(distance == 0):
+        try:
+            distance = float(input('How far are you willing to walk in terms of miles? Just enter the number. (ex: 0.1, 1.0. 2.0): ').strip())
+        except ValueError:
+            print('Bad Input: Enter a numeric value')
+   
+    print(userInput)
+    #coordPair = coordinates['Husky Stadium']
+    #distance = 0.5
+    globalDistance = distance;
+    analyseRegion(userInput, distance, 0)
     
 def analyseRegion(coordinates, distance, count):
     bb = BoundingBox.fromPoint(Point.fromList(coordinates), distance)
@@ -56,13 +76,20 @@ def analyseRegion(coordinates, distance, count):
             assert(point.inBox(bb.indexToBox[k]))
     
     bbCoordinates = bb.indexToBox[block]
-    print("Passing BoundingBox at index " + str(block) + " into Overpass: " + str(bbCoordinates))
+    if (count == 2):
+        print("Passing BoundingBox at index " + str(block) + " into Overpass: " + str(bbCoordinates))
     
-    print("Saving GeoJSON for points in points.txt...")
-    returnFootpathsPoint(bbCoordinates, "points.txt")
+        print("Saving GeoJSON for points in points.txt...")
+        returnFootpathsPoint(bbCoordinates, "points.txt")
     
-    print("Saving GeoJSON for linestring in linestring.txt...")
-    returnFootpathsLineString(bbCoordinates, "linestring.txt")
+        print("Saving GeoJSON for linestring in linestring.txt...")
+        returnFootpathsLineString(bbCoordinates, "linestring.txt")
+
+    bbMidX = (bbCoordinates.lowerx + bb.upperx) / 2
+    bbMidY = (bbCoordinates.lowery + bb.uppery) / 2
+    if (count != 2):
+        count = count + 1
+        analyseRegion([bbMidX, bbMidY], distance, count)
 
 if __name__ == "__main__":
     main()
