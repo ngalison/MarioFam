@@ -32,3 +32,5 @@ var long = 0.0000;
 		alert(long);
 	}
 })();
+
+const GoogleMaps = new Request(https://maps.googleapis.com/maps/api/directions/json?origin=47.6553,-122.3035&destination=47.6631, -122.2982&mode=walking&key=AIzaSyBNxZzXxdDkyy6tBESUQ4Xc7_8_5Qv6Tt4);
