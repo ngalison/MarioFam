@@ -81,8 +81,8 @@ def analyseRegion(coordinates, distance, count):
     if (count == 2):
         return bbCoordinates
 
-    bbMidX = (bbCoordinates.lowerx + bb.upperx) / 2
-    bbMidY = (bbCoordinates.lowery + bb.uppery) / 2
+    bbMidX = (bbCoordinates.lowerx + bbCoordinates.upperx) / 2
+    bbMidY = (bbCoordinates.lowery + bbCoordinates.uppery) / 2
     if (count != 2):
         count = count + 1
         analyseRegion([bbMidX, bbMidY], distance, count)
