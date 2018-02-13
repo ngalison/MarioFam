@@ -22,15 +22,35 @@ var long = 0.0000;
 (function() {
 	window.onload = function() {
 		document.getElementById("good").onclick = onButtonClick;
+		document.getElementById("api").onclick = requestData;
 	};
 
 	function onButtonClick(){
-		alert(marker.getLatLng());
+		//alert(marker.getLatLng());
 		lat = marker.getLatLng().lat; 
 		long = marker.getLatLng().lng;
-		alert(lat);
-		alert(long);
+		document.getElementById("latitude").innerHTML = lat;
+		document.getElementById("longitude").innerHTML = long;
 	}
+
+	function requestData(){
+		const GoogleMaps = new Request("https://maps.googleapis.com/maps/api/directions/json?origin=47.6553,-122.3035&destination=47.6631,-122.2982&mode=walking&key=AIzaSyBNxZzXxdDkyy6tBESUQ4Xc7_8_5Qv6Tt4");
+		fetch(GoogleMaps)
+	  .then(response => {
+	    if (response.status === 200) {
+	      return response.json();
+	    } else {
+	      throw new Error('Something went wrong on api server!');
+	    }
+	  })
+	  .then(response => {
+	    console.debug(response);
+	    // ...
+	  }).catch(error => {
+	    console.error(error);
+	  });
+	}
+
 })();
 
-const GoogleMaps = new Request(https://maps.googleapis.com/maps/api/directions/json?origin=47.6553,-122.3035&destination=47.6631, -122.2982&mode=walking&key=AIzaSyBNxZzXxdDkyy6tBESUQ4Xc7_8_5Qv6Tt4);
+
