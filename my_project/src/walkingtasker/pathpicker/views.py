@@ -4,10 +4,6 @@ import requests
 import sys
 import math
 from builtins import str
-#from . import point
-#from . import boundingbox
-#from . import TaskManagerWeb
-#from TaskManagerWeb import analyseRegion
 
 clientID = "djgzd3RYazV0V0hGaERkMl9KUGF3UToxYjI4NGMxNTEzMmI2NDVl"
 
@@ -15,10 +11,13 @@ def return_paths(request, xCoord, yCoord, distance):
     xCoord = float(xCoord)
     yCoord = float(yCoord)
     distance = float(distance)
-    result = str(xCoord) + ' ' + str(yCoord) + ' ' + str(distance)
+    #these coordinates represent the Quad, using them for testing that algorithm is working same as TaskManager.py
+    #xCoord = -122.307136
+    #yCoord = 47.65776
+    #distance = .2
     finalCoords = analyseRegion([xCoord, yCoord], distance, 0)
     finalCoordsString = str(finalCoords)
-    result += ' ' + finalCoordsString
+    result = 'This is the bounding box that will be passed into WorkingWithOSM: ' + finalCoordsString
     html = "<html><body> %s </body></html>" %result
     return HttpResponse(html)
 
@@ -66,7 +65,8 @@ def analyseRegion(coordinates, distance, count):
     bbMidY = (bbCoordinates.lowery + bbCoordinates.uppery) / 2
     if (count != 2):
         count = count + 1
-        analyseRegion([bbMidX, bbMidY], distance, count)
+        bbCoordinates = analyseRegion([bbMidX, bbMidY], distance, count)
+    return bbCoordinates
 
 class BoundingBox:
     # Initialize bounding box directly
