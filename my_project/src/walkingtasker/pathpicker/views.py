@@ -4,6 +4,10 @@ import requests
 import sys
 import math
 from builtins import str
+from osmapi import OsmApi
+import overpy
+import overpass
+import random
 
 clientID = "djgzd3RYazV0V0hGaERkMl9KUGF3UToxYjI4NGMxNTEzMmI2NDVl"
 
@@ -16,8 +20,9 @@ def return_paths(request, xCoord, yCoord, distance):
     #yCoord = 47.65776
     #distance = .2
     finalCoords = analyseRegion([xCoord, yCoord], distance, 0)
-    finalCoordsString = str(finalCoords)
-    result = 'This is the bounding box that will be passed into WorkingWithOSM: ' + finalCoordsString
+    #finalCoordsString = str(finalCoords)
+    #result = 'This is the bounding box that will be passed into WorkingWithOSM: ' + finalCoordsString
+    result = printFootpathsLineString(finalCoords)
     html = "<html><body> %s </body></html>" %result
     return HttpResponse(html)
 
@@ -67,6 +72,45 @@ def analyseRegion(coordinates, distance, count):
         count = count + 1
         bbCoordinates = analyseRegion([bbMidX, bbMidY], distance, count)
     return bbCoordinates
+
+def printFootpathsLineString(bb):
+    slat = bb.lowery;
+    slon = bb.lowerx;
+    nlat = bb.uppery;
+    nlon = bb.upperx;
+    api = overpy.Overpass()	
+    result = api.query(" [bbox: " + str(slat) +", " + str(slon) + ", " + str(nlat) + ", " + str(nlon) + "]; (way[highway=footway]; way[highway=pedestrian]; way[foot=yes]; way[footway=sidewalk] ); /*added by auto repair*/ (._;>;); /*end of auto repair*/ out;")
+    tempFootpaths = result.ways
+    randomSelection = random.choice(tempFootpaths)
+    footpaths = [randomSelection]
+    result = "{\n"
+    result += "\"type\": \"FeatureCollection\",\n"
+    result += "\"features\": [\n"
+    count = 0
+    for way in footpaths:
+        result += "{\n"
+        result += "\"type\": \"Feature\",\n"
+        result += "\"geometry\": {\n"
+        result += "\"type\": \"LineString\",\n"
+        result += "\"coordinates\": ["
+        nodeCount = 0
+        for node in way.nodes:
+            result += "[" + str(node.lon) + "," + str(node.lat) + "]"
+            if nodeCount != len(way.nodes) - 1:
+                result += ", "
+            nodeCount = nodeCount + 1
+        result += "]\n"
+        result += "},\n"
+        result += "\"properties\": {}\n"
+        if count == len(footpaths) - 1:
+            result += "}\n" #take out last one's comma
+        else:
+            result += "},\n"
+        result += "\n"
+        count = count + 1
+    result += "]\n"
+    result += "}\n"
+    return result
 
 class BoundingBox:
     # Initialize bounding box directly
@@ -160,3 +204,4 @@ class Point:
     
     def __repr__(self):
         return str(self)
+
