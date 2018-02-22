@@ -36,21 +36,18 @@ var long = 0.0000;
 	function requestData(){
 		var here = 'https://route.cit.api.here.com/routing/7.2/calculateroute.json?app_id=vD7Q52EDZxdLcQBbn0LC&app_code=ccWrQE2jWI1y0H4ILI_ytg&waypoint0=47.6553%2C-122.3035&waypoint1=47.6631%2C-122.2982&mode=fastest%3Bpedestrian'
 		const GoogleMaps = new Request(here);
-		var url = "https://maps.googleapis.com/maps/api/directions/xml?origin=47.6553,-122.3035&destination=47.6631,-122.2982&mode=walking&key=AIzaSyBNxZzXxdDkyy6tBESUQ4Xc7_8_5Qv6Tt4"
-		fetch(GoogleMaps, {method: 'GET',  mode: 'cors', headers: new Headers()})
-	  .then(response => {
-	    if (response.status === 200) {
-	      return response.xml();
-	    } else {
-	      throw new Error('Something went wrong on api server!');
-	    }
-	  })
-	  .then(response => {
-	    console.debug(response);
-	    // ...
-	  }).catch(error => {
-	    console.error(error);
-	  });
+		var url = "https://maps.googleapis.com/maps/api/directions/json?origin=47.6553,-122.3035&destination=47.6631,-122.2982&mode=walking&key=AIzaSyBNxZzXxdDkyy6tBESUQ4Xc7_8_5Qv6Tt4"
+		
+		// url (required), options (optional)
+		fetch(here, {
+			method: 'get'
+		}).then(function(response) {
+			return response.json()
+		}).then(function(returnedValue) {
+			alert(JSON.stringify(returnedValue))
+		}).catch(function(err) {
+			alert("error happened")
+		});
 	}
 
 })();
