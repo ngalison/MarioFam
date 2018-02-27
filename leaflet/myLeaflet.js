@@ -44,7 +44,16 @@ var long = 0.0000;
 		}).then(function(response) {
 			return response.json()
 		}).then(function(returnedValue) {
-			alert(JSON.stringify(returnedValue))
+			var coords = returnedValue.response.route[0].leg[0].maneuver;
+			var lineStringList = [];
+			for (var i = 0; i < coords.length; i++) {
+				var coord = coords[i];
+				lineStringList.push([coord.position.longitude, coord.position.latitude])
+			}
+			var geoJSON = {"type": "LineString", 
+							"coordinates": lineStringList}
+			alert(JSON.stringify(geoJSON))
+			//alert(JSON.stringify(coords.length))
 		}).catch(function(err) {
 			alert("error happened")
 		});
