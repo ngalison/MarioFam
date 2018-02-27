@@ -12,8 +12,8 @@ function onMapClick(e) {
     marker.setLatLng(e.latlng);
     lat = marker.getLatLng().lat; 
 	long = marker.getLatLng().lng;
-	document.getElementById("latitude").innerHTML = lat;
-	document.getElementById("longitude").innerHTML = long;
+	//document.getElementById("latitude").innerHTML = lat;
+	//document.getElementById("longitude").innerHTML = long;
 }
 mymap.on('click', onMapClick);
 
@@ -21,8 +21,8 @@ var drumheller = new L.LatLng(47.653739, -122.307744);
 //LatLng(47.653739, -122.307744)
 
 //event handlers 
-var lat = 0.0000;
-var long = 0.0000;
+var lat = 47.653739;
+var long = -122.307744;
 var geoj = null;
 (function() {
 	window.onload = function() {
@@ -40,10 +40,22 @@ var geoj = null;
 
 	function requestData(){
 		var here = "https://route.cit.api.here.com/routing/7.2/calculateroute.json?app_id=vD7Q52EDZxdLcQBbn0LC&app_code=ccWrQE2jWI1y0H4ILI_ytg&waypoint0=" + lat + "%2C" + long + "&waypoint1=47.6631%2C-122.2982&mode=fastest%3Bpedestrian"
-		const GoogleMaps = new Request(here);
-		var url = "https://maps.googleapis.com/maps/api/directions/json?origin="+lat+","+long + "&destination=47.6631,-122.2982&mode=walking&key=AIzaSyBNxZzXxdDkyy6tBESUQ4Xc7_8_5Qv6Tt4"
-		
+		var localserver = "http://127.0.0.1:8000/selectpaths/-122.307136/47.65776/0.2"
+		//const GoogleMaps = new Request(here);		
 		// url (required), options (optional)
+
+		// Request from our own local server for a walking path
+		fetch(localserver, {
+			method: 'get'
+		}).then(function(response) {
+			return response.json()
+		}).then(function(returnedValue) {
+			alert(returnedValue)
+		}).catch(function(err) {
+			alert(err)
+		});
+
+		// Request from the here api to get a path to that location
 		fetch(here, {
 			method: 'get'
 		}).then(function(response) {
