@@ -12,8 +12,8 @@ function onMapClick(e) {
     marker.setLatLng(e.latlng);
     lat = marker.getLatLng().lat; 
 	long = marker.getLatLng().lng;
-	document.getElementById("latitude").innerHTML = lat;
-	document.getElementById("longitude").innerHTML = long;
+	//document.getElementById("latitude").innerHTML = lat;
+	//document.getElementById("longitude").innerHTML = long;
 }
 mymap.on('click', onMapClick);
 
@@ -40,9 +40,7 @@ var geoj = null;
 
 	function requestData(){
 		var here = "https://route.cit.api.here.com/routing/7.2/calculateroute.json?app_id=vD7Q52EDZxdLcQBbn0LC&app_code=ccWrQE2jWI1y0H4ILI_ytg&waypoint0=" + lat + "%2C" + long + "&waypoint1=47.6631%2C-122.2982&mode=fastest%3Bpedestrian"
-		const GoogleMaps = new Request(here);
-		var url = "https://maps.googleapis.com/maps/api/directions/json?origin="+lat+","+long + "&destination=47.6631,-122.2982&mode=walking&key=AIzaSyBNxZzXxdDkyy6tBESUQ4Xc7_8_5Qv6Tt4"
-		
+		//const GoogleMaps = new Request(here);		
 		// url (required), options (optional)
 		fetch(here, {
 			method: 'get'
