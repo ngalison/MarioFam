@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.http import JsonResponse
 import requests
 import sys
 import math
@@ -8,6 +9,7 @@ from osmapi import OsmApi
 import overpy
 import overpass
 import random
+import json
 
 clientID = "djgzd3RYazV0V0hGaERkMl9KUGF3UToxYjI4NGMxNTEzMmI2NDVl"
 
@@ -23,8 +25,10 @@ def return_paths(request, xCoord, yCoord, distance):
     #finalCoordsString = str(finalCoords)
     #result = 'This is the bounding box that will be passed into WorkingWithOSM: ' + finalCoordsString
     result = printFootpathsLineString(finalCoords)
-    html = "<html><body> %s </body></html>" %result
-    return HttpResponse(html)
+    resultJson = json.loads(result)
+    return JsonResponse(resultJson)
+    #html = "<html><body> %s </body></html>" %result
+    #return HttpResponse(html)
 
 
 def analyseRegion(coordinates, distance, count):

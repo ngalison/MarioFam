@@ -46,7 +46,10 @@ var geoj = null;
 
 		// Request from our own local server for a walking path
 		fetch(localserver, {
-			method: 'get'
+			headers: {
+			    'Accept': 'application/json',
+			    'X-Requested-With': 'XMLHttpRequest'
+			}
 		}).then(function(response) {
 			return response.json()
 		}).then(function(returnedValue) {
