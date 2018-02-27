@@ -81,7 +81,11 @@ def printFootpathsLineString(bb):
     api = overpy.Overpass()	
     result = api.query(" [bbox: " + str(slat) +", " + str(slon) + ", " + str(nlat) + ", " + str(nlon) + "]; (way[highway=footway]; way[highway=pedestrian]; way[foot=yes]; way[footway=sidewalk] ); /*added by auto repair*/ (._;>;); /*end of auto repair*/ out;")
     tempFootpaths = result.ways
-    randomSelection = random.choice(tempFootpaths)
+    tempTempFootpaths = [];
+    for way in tempFootpaths:
+        if len(way.nodes)> 4:
+            tempTempFootpaths.append(way)
+    randomSelection = random.choice(tempTempFootpaths)
     footpaths = [randomSelection]
     result = "{\n"
     result += "\"type\": \"FeatureCollection\",\n"
