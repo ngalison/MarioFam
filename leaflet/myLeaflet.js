@@ -41,7 +41,13 @@ var geoj = null;
 	function requestData(){
 		var here = "https://route.cit.api.here.com/routing/7.2/calculateroute.json?app_id=vD7Q52EDZxdLcQBbn0LC&app_code=ccWrQE2jWI1y0H4ILI_ytg&waypoint0=" + lat + "%2C" + long + "&waypoint1=47.6631%2C-122.2982&mode=fastest%3Bpedestrian"
 		console.log(here);
-		var localserver = "http://127.0.0.1:8000/selectpaths/-122.307136/47.65776/0.2"
+
+		walkDist = document.getElementById("input").value;
+		if (isNaN(parseFloat(walkDist))) {
+			alert("Invalid walking distance. Please enter a number.")
+			return;
+		}
+		var localserver = "http://127.0.0.1:8000/selectpaths/-122.307136/47.65776/" + walkDist
 		//const GoogleMaps = new Request(here);		
 		// url (required), options (optional)
 
