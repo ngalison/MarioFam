@@ -10,6 +10,7 @@ import overpy
 import overpass
 import random
 import json
+from ShortDistanceFormulaCopy import dist
 
 clientID = "djgzd3RYazV0V0hGaERkMl9KUGF3UToxYjI4NGMxNTEzMmI2NDVl"
 
@@ -85,11 +86,36 @@ def printFootpathsLineString(bb):
     api = overpy.Overpass()	
     result = api.query(" [bbox: " + str(slat) +", " + str(slon) + ", " + str(nlat) + ", " + str(nlon) + "]; (way[highway=footway]; way[highway=pedestrian]; way[foot=yes]; way[footway=sidewalk] ); /*added by auto repair*/ (._;>;); /*end of auto repair*/ out;")
     tempFootpaths = result.ways
-    tempTempFootpaths = [];
-    for way in tempFootpaths:
-        if len(way.nodes)> 4:
-            tempTempFootpaths.append(way)
-    randomSelection = random.choice(tempTempFootpaths)
+    
+    # tempTempFootpaths = [];
+    # for way in tempFootpaths:
+    #     if len(way.nodes)> 4:
+    #         tempTempFootpaths.append(way)
+
+    posFootpaths = []
+
+    #This section is here such that only footpaths of a certain length are returned
+    MINPATHLENGTH = 100 # The minimum path length in meters THIS SHOULD BE A PARAMETER PASSED IN
+
+    # Run the length checker on decreasing minpathlength until posFootpaths is not empty
+    while not posFootpaths:
+        print(MINPATHLENGTH)
+        for way in tempFootpaths:
+            length = len(way.nodes)
+            nodes = way.nodes
+            firstNode = nodes[0]
+            lastNode = nodes[length - 1]
+            lat1 = firstNode.lat
+            lon1 = firstNode.lon
+            lat2 = lastNode.lat
+            lon2 = lastNode.lon
+            distance = dist(lat1, lon1, lat2, lon2)
+            if distance >= MINPATHLENGTH:
+                posFootpaths.append(way)
+        if not posFootpaths:
+            MINPATHLENGTH = MINPATHLENGTH / 2 
+
+    randomSelection = random.choice(posFootpaths)
     footpaths = [randomSelection]
     result = "{\n"
     result += "\"type\": \"FeatureCollection\",\n"
