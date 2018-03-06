@@ -24,6 +24,8 @@ var drumheller = new L.LatLng(47.653739, -122.307744);
 var lat = 47.653739;
 var long = -122.307744;
 var geoj = null;
+var polyline = null;
+
 (function() {
 	window.onload = function() {
 	//	document.getElementById("good").onclick = onButtonClick;
@@ -57,7 +59,11 @@ var geoj = null;
 		}).then(function(response) {
 			return response.json();
 		}).then(function(returnedValue) {
-			console.log(returnedValue);
+			var coords = returnedValue.features[0].geometry.coordinates;
+			if (polyline != null) {
+				mymap.removeLayer(polyline);
+			}
+			polyline = L.polyline(coords, {color: 'red'}).addTo(mymap);
 		}).catch(function(err) {
 			alert(err);
 		});

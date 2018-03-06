@@ -129,7 +129,7 @@ def printFootpathsLineString(bb):
         result += "\"coordinates\": ["
         nodeCount = 0
         for node in way.nodes:
-            result += "[" + str(node.lon) + "," + str(node.lat) + "]"
+            result += "[" + str(node.lat) + "," + str(node.lon) + "]"
             if nodeCount != len(way.nodes) - 1:
                 result += ", "
             nodeCount = nodeCount + 1
