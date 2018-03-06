@@ -95,7 +95,7 @@ def printFootpathsLineString(bb):
     posFootpaths = []
 
     #This section is here such that only footpaths of a certain length are returned
-    MINPATHLENGTH = 100 # The minimum path length in meters THIS SHOULD BE A PARAMETER PASSED IN
+    MINPATHLENGTH = 250 # The minimum path length in meters
 
     # Run the length checker on decreasing minpathlength until posFootpaths is not empty
     while not posFootpaths:

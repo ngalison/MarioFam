@@ -8,6 +8,12 @@ L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={
 }).addTo(mymap);
 
 var marker = L.marker([47.653739, -122.307744]).addTo(mymap)
+//event handlers 
+var lat = 47.653739;
+var long = -122.307744;
+var geoj = null;
+var polyline = null;
+
 function onMapClick(e) {
     marker.setLatLng(e.latlng);
     lat = marker.getLatLng().lat; 
@@ -19,12 +25,6 @@ mymap.on('click', onMapClick);
 
 var drumheller = new L.LatLng(47.653739, -122.307744);
 //LatLng(47.653739, -122.307744)
-
-//event handlers 
-var lat = 47.653739;
-var long = -122.307744;
-var geoj = null;
-var polyline = null;
 
 (function() {
 	window.onload = function() {
@@ -46,7 +46,7 @@ var polyline = null;
 			alert("Invalid walking distance. Please enter a number.")
 			return;
 		}
-		var localserver = "http://127.0.0.1:8000/selectpaths/-122.307136/47.65776/" + walkDist
+		var localserver = "http://127.0.0.1:8000/selectpaths/" + long + "/" + lat + "/" + walkDist
 		//const GoogleMaps = new Request(here);		
 		// url (required), options (optional)
 
