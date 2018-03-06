@@ -18,20 +18,26 @@ def returnFootpathsLineString(bb, filename):
 	posFootpaths = []
 
 	#This section is here such that only footpaths of a certain length are returned
-	MINPATHLENGTH = 25 # The minimum path length in meters
+	MINPATHLENGTH = 100 # The minimum path length in meters THIS SHOULD BE A PARAMETER PASSED IN
 
-	for way in tempFootpaths:
-		length = len(way.nodes)
-		firstNode = way[0]
-		lastNode = way[length - 1]
-		lat1 = firstNode.lat
-		lon1 = firstNode.lon
-		lat2 = lastNode.lat
-		lon2 = lastNode.lon
-		distance = dist(lat1, lon1, lat2, lon2)
-		print(distance)
-		if distance >= MINPATHLENGTH:
-			posFootpaths.append(way) 
+	# Run the length checker on decreasing minpathlength until posFootpaths is not empty
+	while not posFootpaths:
+		print(MINPATHLENGTH)
+		for way in tempFootpaths:
+			length = len(way.nodes)
+			nodes = way.nodes
+			firstNode = nodes[0]
+			lastNode = nodes[length - 1]
+			lat1 = firstNode.lat
+			lon1 = firstNode.lon
+			lat2 = lastNode.lat
+			lon2 = lastNode.lon
+			distance = dist(lat1, lon1, lat2, lon2)
+			if distance >= MINPATHLENGTH:
+				posFootpaths.append(way)
+		if not posFootpaths:
+			MINPATHLENGTH = MINPATHLENGTH / 2 
+		
 	randomSelection = random.choice(posFootpaths)
 	footpaths = [randomSelection]
 	
