@@ -3,7 +3,7 @@ import overpy
 import overpass
 from boundingbox import BoundingBox
 import random
-from ShortestDistance import dist
+from ShortDistanceFormula import dist
 
 #given a bounding box and a filename, writes a file of the given filename in GeoJson format with all WAYS with pedestrian tags within the bounding box
 def returnFootpathsLineString(bb, filename):
@@ -16,19 +16,22 @@ def returnFootpathsLineString(bb, filename):
 	result = api.query(" [bbox: " + str(slat) +", " + str(slon) + ", " + str(nlat) + ", " + str(nlon) + "]; (way[highway=footway]; way[highway=pedestrian]; way[foot=yes]; way[footway=sidewalk] ); /*added by auto repair*/ (._;>;); /*end of auto repair*/ out;")
 	tempFootpaths = result.ways
 	posFootpaths = []
-        #This section is here such that only footpaths of a certain length are returned
-        MINPATHLETNH = 100 # The minimum path length in meters
-        for way in posFootpaths:
-                length = len(way.nodes)
-                firstNode = way[0]
-                lastNode = way[length - 1]
-                lat1 = firstNode.lat
-                lon1 = firstNode.lon
-                lat2 = lastNode.lat
-                lon2 = lastNode.lon
-                distance = dist(lat1, lon1, lat2, lon2)
+
+	#This section is here such that only footpaths of a certain length are returned
+	MINPATHLENGTH = 25 # The minimum path length in meters
+
+	for way in tempFootpaths:
+		length = len(way.nodes)
+		firstNode = way[0]
+		lastNode = way[length - 1]
+		lat1 = firstNode.lat
+		lon1 = firstNode.lon
+		lat2 = lastNode.lat
+		lon2 = lastNode.lon
+		distance = dist(lat1, lon1, lat2, lon2)
+		print(distance)
 		if distance >= MINPATHLENGTH:
-			aposFootpaths.append(way) 
+			posFootpaths.append(way) 
 	randomSelection = random.choice(posFootpaths)
 	footpaths = [randomSelection]
 	
