@@ -40,22 +40,20 @@ var geoj = null;
 
 	function requestData(){
 		var here = "https://route.cit.api.here.com/routing/7.2/calculateroute.json?app_id=vD7Q52EDZxdLcQBbn0LC&app_code=ccWrQE2jWI1y0H4ILI_ytg&waypoint0=" + lat + "%2C" + long + "&waypoint1=47.6631%2C-122.2982&mode=fastest%3Bpedestrian"
+		console.log(here);
 		var localserver = "http://127.0.0.1:8000/selectpaths/-122.307136/47.65776/0.2"
 		//const GoogleMaps = new Request(here);		
 		// url (required), options (optional)
 
 		// Request from our own local server for a walking path
 		fetch(localserver, {
-			headers: {
-			    'Accept': 'application/json',
-			    'X-Requested-With': 'XMLHttpRequest'
-			}
+			method: 'get'
 		}).then(function(response) {
-			return response.json()
+			return response.json();
 		}).then(function(returnedValue) {
-			alert(returnedValue)
+			console.log(returnedValue);
 		}).catch(function(err) {
-			alert(err)
+			alert(err);
 		});
 
 		// Request from the here api to get a path to that location
