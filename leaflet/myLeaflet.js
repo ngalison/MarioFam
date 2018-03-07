@@ -40,6 +40,10 @@ var drumheller = new L.LatLng(47.653739, -122.307744);
 		document.getElementById("longitude").innerHTML = long;
 	}*/
 
+	function dist(coord1, coord2) {
+		return Math.sqrt(Math.pow(coord1[0] - coord2[0], 2) + Math.pow(coord1[1] - coord2[1], 2))
+	}
+
 	function requestData(){
 		walkDist = document.getElementById("input").value;
 		if (isNaN(parseFloat(walkDist))) {
@@ -47,6 +51,7 @@ var drumheller = new L.LatLng(47.653739, -122.307744);
 			return;
 		}
 		var localserver = "http://127.0.0.1:8000/selectpaths/" + long + "/" + lat + "/" + walkDist
+		console.log(localserver)
 		//const GoogleMaps = new Request(here);		
 		// url (required), options (optional)
 
@@ -63,10 +68,20 @@ var drumheller = new L.LatLng(47.653739, -122.307744);
 			polyline = L.polyline(walkcoords, {color: 'red'}).addTo(mymap);
 
 			// Request to here api AFTER we know where we're going
-			var lastCoord = walkcoords[walkcoords.length - 1];
-			alert(lastCoord);
+			var srcCoord = [lat, long];
+			var destCoord1 = walkcoords[0];
+			var destCoord2 = walkcoords[walkcoords.length - 1];
+
+			var destCoord;
+			if (dist(srcCoord, destCoord1) < dist(srcCoord, destCoord2)) {
+				destCoord = destCoord1;
+			} else {
+				destCoord = destCoord2;
+			}
+			alert(destCoord)
+			
 			var here = "https://route.cit.api.here.com/routing/7.2/calculateroute.json?app_id=vD7Q52EDZxdLcQBbn0LC&app_code=ccWrQE2jWI1y0H4ILI_ytg&waypoint0=" 
-						+ lat + "%2C" + long + "&waypoint1=" + lastCoord[0] + "%2C" + lastCoord[1] + "&mode=fastest%3Bpedestrian"
+						+ lat + "%2C" + long + "&waypoint1=" + destCoord[0] + "%2C" + destCoord[1] + "&mode=fastest%3Bpedestrian"
 
 			// NESTED FETCH CHAOS
 			// Request from the here api to get a path to that location
