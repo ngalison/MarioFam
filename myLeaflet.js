@@ -59,7 +59,7 @@ var drumheller = new L.LatLng(47.653739, -122.307744);
 		fetch(localserver, {
 			method: 'get'
 		}).then(function(response) {
-			return response;//.json()
+			return response.json();
 		}).then(function(returnedValue) {
 			var walkcoords = returnedValue.features[0].geometry.coordinates;
 			if (polyline != null) {
