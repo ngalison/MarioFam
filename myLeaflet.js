@@ -50,13 +50,14 @@ var drumheller = new L.LatLng(47.653739, -122.307744);
 			alert("Invalid walking distance. Please enter a number.")
 			return;
 		}
-		var localserver = "35.192.141.220/Project/selectpaths/" + long + "/" + lat + "/" + walkDist
-		console.log(localserver)
+		var localserver = "http://127.0.0.1:8000/selectpaths/" + long + "/" + lat + "/" + walkDist
+		var cloudserver = "35.192.141.220/Project/selectpaths/" + long + "/" + lat + "/" + walkDist
+		console.log(cloudserver)
 		//const GoogleMaps = new Request(here);		
 		// url (required), options (optional)
 
 		// Request from our own local server for a walking path
-		fetch(localserver, {
+		fetch(cloudserver, {
 			method: 'get'
 		}).then(function(response) {
 			console.log(response);
