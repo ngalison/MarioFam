@@ -51,7 +51,7 @@ var drumheller = new L.LatLng(47.653739, -122.307744);
 			return;
 		}
 		var localserver = "http://127.0.0.1:8000/selectpaths/" + long + "/" + lat + "/" + walkDist
-		var cloudserver = "35.192.141.220/Project/selectpaths/" + long + "/" + lat + "/" + walkDist
+		var cloudserver = "http://35.192.141.220/Project/selectpaths/" + long + "/" + lat + "/" + walkDist
 		console.log(cloudserver)
 		//const GoogleMaps = new Request(here);		
 		// url (required), options (optional)
