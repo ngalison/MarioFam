@@ -28,18 +28,19 @@ def select_all(conn):
     cur.execute("SELECT * FROM test")
     rows = cur.fetchall()
     for row in rows:
-		print(row)
+    	print(row)
 
-def insert_db(conn, input):
+def insert_db(conn, val1, val2):
     curr = conn.cursor();
-    curr.execute("INSERT INTO TEST VALUES (?, ?)", (input))
+    curr.execute("INSERT INTO TEST VALUES (?, ?)", (val1, val2))
 
 def main():
     database = "test.db"
-    value = input("Enter the tuple you want entered: ")
+    #value = input("Enter the tuple you want entered: ")
+    val1, val2 = input("Enter the tuple you want entered: ").split()
     # create a database connection
     conn = create_connection(database)
-    insert_db(conn, value);
+    insert_db(conn, val1, val2);
     with conn:
         select_all(conn)
  
