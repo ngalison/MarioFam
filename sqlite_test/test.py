@@ -17,19 +17,19 @@ def create_connection(db_file):
     return None
  
  
-def select_all_tasks(conn):
+def select_all(conn):
     """
     Query all rows in the tasks table
     :param conn: the Connection object
     :return:
     """
     cur = conn.cursor()
-    cur.execute("SELECT * FROM test")
- 
-    rows = cur.fetchall()
- 
-    for row in rows:
-        print(row)
+	cur.execute("INSERT INTO test VALUES(?, ?)", ("C", 3))
+	cur.execute("SELECT * FROM test")
+	rows = cur.fetchall()
+	for row in rows:
+		print(row)
+
 
 def main():
     database = "test.db"
@@ -37,7 +37,7 @@ def main():
     # create a database connection
     conn = create_connection(database)
     with conn:
-        select_all_tasks(conn)
+        select_all(conn)
  
  
 if __name__ == '__main__':
