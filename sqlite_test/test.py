@@ -24,18 +24,22 @@ def select_all(conn):
     :return:
     """
     cur = conn.cursor()
-	cur.execute("INSERT INTO test VALUES(?, ?)", ("C", 3))
-	cur.execute("SELECT * FROM test")
-	rows = cur.fetchall()
-	for row in rows:
+	#cur.execute("INSERT INTO test VALUES(?, ?)", ("C", 3))
+    cur.execute("SELECT * FROM test")
+    rows = cur.fetchall()
+    for row in rows:
 		print(row)
 
+def insert_db(conn, input):
+    curr = conn.cursor();
+    curr.execute("INSERT INTO TEST VALUES (?, ?)", (input))
 
 def main():
     database = "test.db"
- 
+    value = input("Enter the tuple you want entered: ")
     # create a database connection
     conn = create_connection(database)
+    insert_db(conn, value);
     with conn:
         select_all(conn)
  
