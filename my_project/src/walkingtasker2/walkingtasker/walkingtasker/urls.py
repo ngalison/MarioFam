@@ -19,5 +19,11 @@ from pathpicker import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('selectpaths/<path:xCoord>/<path:yCoord>/<path:distance>', views.return_paths)
+    path('selectpaths/<path:xCoord>/<path:yCoord>/<path:distance>', views.return_paths),
+    path('homepage/', views.index)
 ]
+
+from django.conf import settings
+from django.conf.urls.static import static
+
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

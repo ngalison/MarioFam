@@ -14,6 +14,9 @@ import json
 
 clientID = "djgzd3RYazV0V0hGaERkMl9KUGF3UToxYjI4NGMxNTEzMmI2NDVl"
 
+def index(request):
+    return render(request, 'index.html',)
+
 def dist(lat1, lon1, lat2, lon2):
     #Uses Equirectangular approx
     R = 6378137 #The radius of the radius of the earth in km
@@ -80,7 +83,7 @@ def analyseRegion(coordinates, distance, count):
         for point in v:
             #Ensure that the points were properly mapped, can be commented out for better runtime
             assert(point.inBox(bb.indexToBox[k]))
-    
+
     bbCoordinates = bb.indexToBox[block]
     if (count == 2):
         return bbCoordinates
@@ -97,10 +100,10 @@ def printFootpathsLineString(bb):
     slon = bb.lowerx;
     nlat = bb.uppery;
     nlon = bb.upperx;
-    api = overpy.Overpass()	
+    api = overpy.Overpass()
     result = api.query(" [bbox: " + str(slat) +", " + str(slon) + ", " + str(nlat) + ", " + str(nlon) + "]; (way[highway=footway]; way[highway=pedestrian]; way[foot=yes]; way[footway=sidewalk] ); /*added by auto repair*/ (._;>;); /*end of auto repair*/ out;")
     tempFootpaths = result.ways
-    
+
     # tempTempFootpaths = [];
     # for way in tempFootpaths:
     #     if len(way.nodes)> 4:
@@ -126,7 +129,7 @@ def printFootpathsLineString(bb):
             if distance >= MINPATHLENGTH:
                 posFootpaths.append(way)
         if not posFootpaths:
-            MINPATHLENGTH = MINPATHLENGTH / 2 
+            MINPATHLENGTH = MINPATHLENGTH / 2
 
     randomSelection = random.choice(posFootpaths)
     footpaths = [randomSelection]
@@ -167,7 +170,7 @@ class BoundingBox:
         self.upperx = upperx
         self.uppery = uppery
         self.indexToBox = {}
-        
+
     #Initialize from a point and distance in miles (calculates bounds based on this)
     @classmethod
     def fromPoint(cls, p, distance):
@@ -177,7 +180,7 @@ class BoundingBox:
         lowerx = p.x - offset
         upperx = p.x + offset
         return cls(lowerx, lowery, upperx, uppery)
-    
+
     # Given a bounding box, number of subdivisions, and point p, returns the region it would belong to
     # Assumes subdivisions is a perfect square.
     # Also updates self.indexToBox with a dictionary from index to each sub boundingBox produced by this data.
@@ -185,7 +188,7 @@ class BoundingBox:
         numRows = int(math.sqrt(subdivisions))
         deltax = (self.upperx - self.lowerx) / numRows
         deltay = (self.uppery - self.lowery) / numRows
-        
+
         self.indexToBox = {}
         currenty = self.lowery
         for i in range(numRows):
@@ -194,7 +197,7 @@ class BoundingBox:
                 self.indexToBox[1 + 3 * i + j] = BoundingBox(currentx, currenty, currentx + deltax, currenty + deltay)
                 currentx += deltax
             currenty += deltay
-        
+
         res = 1
         currx = self.lowerx
         curry = self.lowery
@@ -205,13 +208,13 @@ class BoundingBox:
             res += 3
             curry += deltay
         return res
-    
+
     # Finds the bounding box given a region index, the point and subdivisions
     def get_region_bounds(self, i, p, subdivisions):
         numRows = int(math.sqrt(subdivisions))
         deltax = (self.upperx - self.lowerx) / numRows
         deltay = (self.uppery - self.lowery) / numRows
-        
+
         res = 1
         currx = self.lowerx
         curry = self.lowery
@@ -221,13 +224,13 @@ class BoundingBox:
         while (curry + deltay < p.y):
             res += 3
             curry += deltay
-        
+
         assert(res == i)
         return BoundingBox(currx, curry, currx + deltax, curry + deltay)
-    
+
     def __str__(self):
         return "([" + str(self.lowerx) + ", " + str(self.lowery) + "],[" + str(self.upperx) + ", " + str(self.uppery) + "])"
-    
+
     def __repr__(self):
         return str(self)
 
@@ -236,19 +239,18 @@ class Point:
     def __init__(self, x, y):
         self.x = x
         self.y = y
-    
+
     #Initialize with a list
     @classmethod
     def fromList(cls, li):
         return cls(li[0], li[1])
-    
+
     #Returns whether this point is in the specified bounding box.
     def inBox(self, bb):
         return (bb.lowerx <= self.x <= bb.upperx) & (bb.lowery <= self.y <= bb.uppery)
-    
+
     def __str__(self):
         return "(" + str(self.x) + ", " + str(self.y) + ")"
-    
+
     def __repr__(self):
         return str(self)
-

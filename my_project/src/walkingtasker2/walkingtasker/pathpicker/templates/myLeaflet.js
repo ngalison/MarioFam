@@ -8,7 +8,7 @@ L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={
 }).addTo(mymap);
 
 var marker = L.marker([47.653739, -122.307744]).addTo(mymap)
-//event handlers 
+//event handlers
 var lat = 47.653739;
 var long = -122.307744;
 var geoj = null;
@@ -16,7 +16,7 @@ var polyline = null;
 
 function onMapClick(e) {
     marker.setLatLng(e.latlng);
-    lat = marker.getLatLng().lat; 
+    lat = marker.getLatLng().lat;
 	long = marker.getLatLng().lng;
 	//document.getElementById("latitude").innerHTML = lat;
 	//document.getElementById("longitude").innerHTML = long;
@@ -34,7 +34,7 @@ var drumheller = new L.LatLng(47.653739, -122.307744);
 
 	/*function onButtonClick(){
 		//alert(marker.getLatLng());
-		lat = marker.getLatLng().lat; 
+		lat = marker.getLatLng().lat;
 		long = marker.getLatLng().lng;
 		document.getElementById("latitude").innerHTML = lat;
 		document.getElementById("longitude").innerHTML = long;
@@ -52,8 +52,8 @@ var drumheller = new L.LatLng(47.653739, -122.307744);
 		}
 		var localserver = "http://127.0.0.1:8000/selectpaths/" + long + "/" + lat + "/" + walkDist
 		var cloudserver = "https://35.192.141.220/Project/selectpaths/" + long + "/" + lat + "/" + walkDist
-		console.log(cloudserver)
-		//const GoogleMaps = new Request(here);		
+		console.log(localserver)
+		//const GoogleMaps = new Request(here);
 		// url (required), options (optional)
 
 		// Request from our own local server for a walking path
@@ -82,8 +82,8 @@ var drumheller = new L.LatLng(47.653739, -122.307744);
 				destCoord = destCoord2;
 			}
 			alert(destCoord)
-			
-			var here = "https://route.cit.api.here.com/routing/7.2/calculateroute.json?app_id=vD7Q52EDZxdLcQBbn0LC&app_code=ccWrQE2jWI1y0H4ILI_ytg&waypoint0=" 
+
+			var here = "https://route.cit.api.here.com/routing/7.2/calculateroute.json?app_id=vD7Q52EDZxdLcQBbn0LC&app_code=ccWrQE2jWI1y0H4ILI_ytg&waypoint0="
 						+ lat + "%2C" + long + "&waypoint1=" + destCoord[0] + "%2C" + destCoord[1] + "&mode=fastest%3Bpedestrian"
 
 			// NESTED FETCH CHAOS
@@ -99,7 +99,7 @@ var drumheller = new L.LatLng(47.653739, -122.307744);
 					var coord = coords[i];
 					lineStringList.push([coord.position.longitude, coord.position.latitude])
 				}
-				var geoJSON = {"type": "LineString", 
+				var geoJSON = {"type": "LineString",
 								"coordinates": lineStringList}
 				if (geoj != null) {
 					mymap.removeLayer(geoj)
@@ -118,5 +118,3 @@ var drumheller = new L.LatLng(47.653739, -122.307744);
 	}
 
 })();
-
-
