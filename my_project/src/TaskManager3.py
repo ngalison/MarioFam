@@ -38,9 +38,9 @@ def main():
     #coordPair = coordinates['Husky Stadium']
     #distance = 0.5
     globalDistance = distance;
-    analyseRegion(userInput, distance, 0)
+    analyseRegion(userInput, distance)
     
-def analyseRegion(coordinates, distance, count):
+def analyseRegion(coordinates, distance):
     bb = BoundingBox.fromPoint(Point.fromList(coordinates), distance)
     requestString = "https://a.mapillary.com/v3/images/?bbox=" + str(bb.lowerx) + "," + str(bb.lowery) + "," + str(bb.upperx) + "," + str(bb.uppery)
     requestString += "&client_id=" + clientID
@@ -76,20 +76,14 @@ def analyseRegion(coordinates, distance, count):
             assert(point.inBox(bb.indexToBox[k]))
     
     bbCoordinates = bb.indexToBox[block]
-    if (count == 2):
-        print("Passing BoundingBox at index " + str(block) + " into Overpass: " + str(bbCoordinates))
-    
-        print("Saving GeoJSON for area in areas.txt...")
-        returnFootpathsAreas(bbCoordinates, "areas.txt")
-    
-        print("Saving GeoJSON for linestring in linestring.txt...")
-        returnFootpathsLineString(bbCoordinates, "linestring.txt")
+    print("Passing BoundingBox at index " + str(block) + " into Overpass: " + str(bbCoordinates))
 
-    bbMidX = (bbCoordinates.lowerx + bbCoordinates.upperx) / 2
-    bbMidY = (bbCoordinates.lowery + bbCoordinates.uppery) / 2
-    if (count != 2):
-        count = count + 1
-        analyseRegion([bbMidX, bbMidY], distance, count)
+    print("Saving GeoJSON for area in areas.txt...")
+    returnFootpathsAreas(bbCoordinates, "areas.txt")
+
+    print("Saving GeoJSON for linestring in linestring.txt...")
+    returnFootpathsLineString(bbCoordinates, "linestring.txt")
+
 
 if __name__ == "__main__":
     main()
