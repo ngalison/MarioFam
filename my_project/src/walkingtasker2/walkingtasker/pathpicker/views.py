@@ -15,7 +15,7 @@ import json
 clientID = "djgzd3RYazV0V0hGaERkMl9KUGF3UToxYjI4NGMxNTEzMmI2NDVl"
 
 def index(request):
-    return render(request, 'index.html',)
+    return render(request, 'index.html')
 
 def dist(lat1, lon1, lat2, lon2):
     #Uses Equirectangular approx
