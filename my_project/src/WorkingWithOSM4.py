@@ -17,9 +17,13 @@ def returnFootpathsLineString(bb, filename):
 	database = "data.db"
 	conn = create_connection(database)
 	curr = conn.cursor()
+
+	#TODO: Query database BEFORE api and pull data if there
+	# ====================================================
+
+	# Get current stored paths to know what id to insert
 	curr.execute("SELECT COUNT(*) FROM paths");
-	count = curr.fetchone()[0]
-	print("STUFFFF:::" + str(count))
+	currCount = curr.fetchone()[0]
 
 	api = overpy.Overpass()	
 	result = api.query(" [bbox: " + str(slat) +", " + str(slon) + ", " + str(nlat) + ", " + str(nlon) + "]; (way[highway=footway]; way[highway=pedestrian]; way[foot=yes]; way[footway=sidewalk] ); /*added by auto repair*/ (._;>;); /*end of auto repair*/ out;")
@@ -47,39 +51,69 @@ def returnFootpathsLineString(bb, filename):
 		if not posFootpaths:
 			MINPATHLENGTH = MINPATHLENGTH / 2 
 		
-	randomSelection = random.choice(posFootpaths)
-	footpaths = [randomSelection]
-	
-	f = open(filename, "w+")
+	# randomSelection = random.choice(posFootpaths)
+	# chosenFootpath = [randomSelection]
+
+	# Put each of posFootpaths into the database
+	# TODO: Don't insert duplicate paths
+	# ======================================
+	for way in posFootpaths:
+		nodes = way.nodes
+		firstNode = nodes[0]
+		lastNode = nodes[length - 1]
+		lat1 = firstNode.lat
+		lon1 = firstNode.lon
+		lat2 = lastNode.lat
+		lon2 = lastNode.lon
+		distance = dist(lat1, lon1, lat2, lon2)
+
+		curr = conn.cursor()
+		currCount += 1
+		# Insert path with its endpoints
+    	curr.execute("INSERT INTO paths VALUES (?, ?, ?, ?, ?, ?)", 
+    		(currCount, str(way), lat1, lon1, lat2, lon2))
+
+    	# Insert into path_data with length and assigned/completed set to 0
+    	curr = conn.cursor()
+    	curr.execute("INSERT INTO path_data VALUES (?, ?, ?, ?)",
+    		(currCount, distance, 0, 0))
+
+    # Grab first path and mark as assigned
+    curr = conn.cursor()
+    curr.execute("SELECT TOP 1 path_id, path FROM paths")
+    my_path_id, my_path = curr.fetchone()
+
+    curr = conn.cursor()
+    curr.execute("UPDATE path_data SET assigned = 1 WHERE path_id = my_path_id")
+
+    # Write chosen path to file
+    way = my_path
+    f = open(filename, "w+")
 	
 	f.write("{\n")
 	
 	f.write("\"type\": \"FeatureCollection\",\n")
 	f.write("\"features\": [\n")
-	wayCount = 0;
-	for way in footpaths:
-		f.write("{\n")
-		f.write("\"type\": \"Feature\",\n")
-		f.write("\"geometry\": {\n")
-		f.write("\"type\": \"LineString\",\n")
-		f.write("\"coordinates\": [")
-		nodeCount = 0
-		for node in way.nodes:
-			f.write("[" + str(node.lon) + "," + str(node.lat) + "]")
-			if nodeCount != len(way.nodes) - 1:
-				f.write(", ")
-			nodeCount = nodeCount + 1
-		f.write("]\n")
-		f.write("},\n")
-		f.write("\"properties\": {}\n")
-		if wayCount == len(footpaths) - 1:
-			f.write("}\n") #take out last one's comma
-		else:
-			f.write("},\n")
-		f.write("\n")
-		wayCount = wayCount + 1
+	f.write("{\n")
+	f.write("\"type\": \"Feature\",\n")
+	f.write("\"geometry\": {\n")
+	f.write("\"type\": \"LineString\",\n")
+	f.write("\"coordinates\": [")
+	nodeCount = 0
+	for node in way.nodes:
+		f.write("[" + str(node.lon) + "," + str(node.lat) + "]")
+		if nodeCount != len(way.nodes) - 1:
+			f.write(", ")
+		nodeCount = nodeCount + 1
+	f.write("]\n")
+	f.write("},\n")
+	f.write("\"properties\": {}\n")
+	f.write("}\n") 
+	f.write("\n")
 	f.write("]\n")
 	f.write("}\n")
+
+
 		
 def create_connection(db_file):
     """ create a database connection to the SQLite database
