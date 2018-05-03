@@ -26,10 +26,7 @@ def returnFootpathsLineString(bb, filename):
 	currCount = curr.fetchone()[0]
 
 	api = overpy.Overpass()	
-
-	apiString = " [bbox: " + str(slat) +", " + str(slon) + ", " + str(nlat) + ", " + str(nlon) + "]; (way[highway=footway]; way[highway=pedestrian]; way[foot=yes]; way[footway=sidewalk] ); /*added by auto repair*/ (._;>;); /*end of auto repair*/ out;"
-	print(apiString)
-	result = api.query(apiString)
+	result = api.query(" [bbox: " + str(slat) +", " + str(slon) + ", " + str(nlat) + ", " + str(nlon) + "]; (way[highway=footway]; way[highway=pedestrian]; way[foot=yes]; way[footway=sidewalk] ); /*added by auto repair*/ (._;>;); /*end of auto repair*/ out;")
 	tempFootpaths = result.ways
 	posFootpaths = []
 
@@ -73,23 +70,25 @@ def returnFootpathsLineString(bb, filename):
 		curr = conn.cursor()
 		currCount += 1
 		# Insert path with its endpoints
-		curr.execute("INSERT INTO paths VALUES (?, ?, ?, ?, ?, ?)", (currCount, str(way), lat1, lon1, lat2, lon2))
+    	curr.execute("INSERT INTO paths VALUES (?, ?, ?, ?, ?, ?)", 
+    		(currCount, str(way), lat1, lon1, lat2, lon2))
 
-		# Insert into path_data with length and assigned/completed set to 0
-		curr = conn.cursor()
-		curr.execute("INSERT INTO path_data VALUES (?, ?, ?, ?)", (currCount, distance, 0, 0))
+    	# Insert into path_data with length and assigned/completed set to 0
+    	curr = conn.cursor()
+    	curr.execute("INSERT INTO path_data VALUES (?, ?, ?, ?)",
+    		(currCount, distance, 0, 0))
 
-	# Grab first path and mark as assigned
-	curr = conn.cursor()
-	curr.execute("SELECT TOP 1 path_id, path FROM paths")
-	my_path_id, my_path = curr.fetchone()
+    # Grab first path and mark as assigned
+    curr = conn.cursor()
+    curr.execute("SELECT TOP 1 path_id, path FROM paths")
+    my_path_id, my_path = curr.fetchone()
 
-	curr = conn.cursor()
-	curr.execute("UPDATE path_data SET assigned = 1 WHERE path_id = my_path_id")
+    curr = conn.cursor()
+    curr.execute("UPDATE path_data SET assigned = 1 WHERE path_id = my_path_id")
 
-	# Write chosen path to file
-	way = my_path
-	f = open(filename, "w+")
+    # Write chosen path to file
+    way = my_path
+    f = open(filename, "w+")
 	
 	f.write("{\n")
 	
@@ -117,15 +116,15 @@ def returnFootpathsLineString(bb, filename):
 
 		
 def create_connection(db_file):
-	""" create a database connection to the SQLite database
-		specified by the db_file
-	:param db_file: database file
-	:return: Connection object or None
-	"""
-	try:
-		conn = sqlite3.connect(db_file)
-		return conn
-	except Error as e:
-		print(e)
+    """ create a database connection to the SQLite database
+        specified by the db_file
+    :param db_file: database file
+    :return: Connection object or None
+    """
+    try:
+        conn = sqlite3.connect(db_file)
+        return conn
+    except Error as e:
+        print(e)
  
-	return None
+    return None
