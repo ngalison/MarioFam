@@ -27,7 +27,7 @@ def returnFootpathsLineString(bb, filename):
 
 	api = overpy.Overpass()	
 
-	apiString = " [bbox: " + str(slat) +", " + str(slon) + ", " + str(nlat) + ", " + str(nlon) + "]; (way[highway=footway]; way[highway=pedestrian]; way[foot=yes]; way[footway=sidewalk] ); /*added by auto repair*/ (._;>;); /*end of auto repair*/ out;"
+	apiString = " [bbox: " + str(slat) +", " + str(slon) + ", " + str(nlat) + ", " + str(nlon) + "]; (way[highway=footway]; way[highway=pedestrian]; way[foot=yes]; way[footway=sidewalk]; ); /*added by auto repair*/ (._;>;); /*end of auto repair*/ out;"
 	print(apiString)
 	result = api.query(apiString)
 	tempFootpaths = result.ways
@@ -73,21 +73,25 @@ def returnFootpathsLineString(bb, filename):
 		curr = conn.cursor()
 		currCount += 1
 		# Insert path with its endpoints
-		curr.execute("INSERT INTO paths VALUES (?, ?, ?, ?, ?, ?)", (currCount, str(way), lat1, lon1, lat2, lon2))
+		print(way.id)
+		curr.execute("INSERT INTO paths VALUES (?, ?, ?, ?, ?, ?)", (int(way.id), str(way), float(lat1), float(lon1), float(lat2), float(lon2)))
+		conn.commit()
 
 		# Insert into path_data with length and assigned/completed set to 0
 		curr = conn.cursor()
 		curr.execute("INSERT INTO path_data VALUES (?, ?, ?, ?)", (currCount, distance, 0, 0))
+		conn.commit()
 
 	# Grab first path and mark as assigned
 	curr = conn.cursor()
-	curr.execute("SELECT TOP 1 path_id, path FROM paths")
+	curr.execute("SELECT path_id, path FROM paths LIMIT 1")
 	my_path_id, my_path = curr.fetchone()
 
 	curr = conn.cursor()
-	curr.execute("UPDATE path_data SET assigned = 1 WHERE path_id = my_path_id")
+	curr.execute("UPDATE path_data SET assigned = 1 WHERE path_id = " + str(my_path_id))
 
 	# Write chosen path to file
+	print(way)
 	way = my_path
 	f = open(filename, "w+")
 	

@@ -13,7 +13,7 @@ def returnFootpathsLineString(bb, filename):
 	nlon = bb.upperx;
 	
 	api = overpy.Overpass()	
-	result = api.query(" [bbox: " + str(slat) +", " + str(slon) + ", " + str(nlat) + ", " + str(nlon) + "]; (way[highway=footway]; way[highway=pedestrian]; way[foot=yes]; way[footway=sidewalk] ); /*added by auto repair*/ (._;>;); /*end of auto repair*/ out;")
+	result = api.query(" [bbox: " + str(slat) +", " + str(slon) + ", " + str(nlat) + ", " + str(nlon) + "]; (way[highway=footway]; way[highway=pedestrian]; way[foot=yes]; way[footway=sidewalk]; ); /*added by auto repair*/ (._;>;); /*end of auto repair*/ out;")
 	tempFootpaths = result.ways
 	posFootpaths = []
 
@@ -80,7 +80,7 @@ def returnFootpathsAreas(bb, filename):
 	nlon = bb.upperx;
 	
 	api = overpy.Overpass()	
-	result = api.query(" [bbox: " + str(slat) +", " + str(slon) + ", " + str(nlat) + ", " + str(nlon) + "]; (relation[highway=footway]; relation[highway=pedestrian]; relation[foot=yes]; relation[footway=sidewalk] ); /*added by auto repair*/ (._;>;); /*end of auto repair*/ out;")
+	result = api.query(" [bbox: " + str(slat) +", " + str(slon) + ", " + str(nlat) + ", " + str(nlon) + "]; (relation[highway=footway]; relation[highway=pedestrian]; relation[foot=yes]; relation[footway=sidewalk]; ); /*added by auto repair*/ (._;>;); /*end of auto repair*/ out;")
 	footpaths = result.ways
 	
 	f = open(filename, "w+")
