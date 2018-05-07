@@ -12,8 +12,10 @@ def returnFootpathsPoint(bb, filename):
 	nlon = bb.upperx;
 	
 	api = overpy.Overpass()	
-	result = api.query(" [bbox: " + str(slat) +", " + str(slon) + ", " + str(nlat) + ", " + str(nlon) + "]; (way[highway=footway]; way[highway=pedestrian]; way[foot=yes]; way[footway=sidewalk] ); /*added by auto repair*/ (._;>;); /*end of auto repair*/ out;")
+	result = api.query("way[highway=pedestrian] (" + str(slat) + "," + str(slon) + "," + str(nlat) + "," + str(nlon) + ");" "way[highway=footway] (" + str(slat) + "," + str(slon) + "," + str(nlat) + "," + str(nlon) + ");" "way[foot=yes] (" + str(slat) + "," + str(slon) + "," + str(nlat) + "," + str(nlon) + ");" "way[footway=sidewalk] (" + str(slat) + "," + str(slon) + "," + str(nlat) + "," + str(nlon) + ");out;")
+#	result = api.query("way[highway=footway] (" + str(slat) + "," + str(slon) + "," + str(nlat) + "," + str(nlon) + ");out;")
 	tempFootpaths = result.ways
+	print(str(len(result.ways)))
 	randomSelection = random.choice(tempFootpaths)
 	footpaths = [randomSelection]
 	f = open(filename, "w+")

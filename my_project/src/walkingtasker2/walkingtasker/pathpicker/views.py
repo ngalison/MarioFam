@@ -55,7 +55,11 @@ def analyseRegion(coordinates, distance, count):
     requestString += "&client_id=" + clientID
     boundingbox = requests.get(requestString);
     #Now separate into the list of coordinates
-    featureList = boundingbox.json()['features']
+    try:
+        featureList = boundingbox.json()['features']
+    except ValueError:
+        print("some queer stuff happened, run it again")
+        analyseRegion(coordinates, distance, count)
     points = []
     for feature in featureList:
         points.append(Point.fromList((feature['geometry']['coordinates'])))
@@ -101,9 +105,11 @@ def printFootpathsLineString(bb):
     nlat = bb.uppery;
     nlon = bb.upperx;
     api = overpy.Overpass()
-    result = api.query(" [bbox: " + str(slat) +", " + str(slon) + ", " + str(nlat) + ", " + str(nlon) + "]; (way[highway=footway]; way[highway=pedestrian]; way[foot=yes]; way[footway=sidewalk] ); /*added by auto repair*/ (._;>;); /*end of auto repair*/ out;")
+#    result = api.query(" [bbox: " + str(slat) +", " + str(slon) + ", " + str(nlat) + ", " + str(nlon) + "]; (way[highway=footway]; way[highway=pedestrian]; way[foot=yes]; way[footway=sidewalk] ); /*added by auto repair*/ (._;>;); /*end of auto repair*/ out;")
+#    result = api.query ("way [highway=pedestrian] ({{bbox: " + str(slat) +", " + str(slon) + ", " + str(nlat) + ", " + str(nlon) + "}}); way [highway=footway] ({{bbox: " + str(slat) +", " + str(slon) + ", " + str(nlat) + ", " + str(nlon) + "}}); way [foot=yes] ({{bbox: " + str(slat) +", " + str(slon) + ", " + str(nlat) + ", " + str(nlon) + "}}); way [footway=sidewalk] ({{bbox: " + str(slat) +", " + str(slon) + ", " + str(nlat) + ", " + str(nlon) + "}});out;")
+#    result = api.query("way[highway=pedestrian] (" + str(slat) + "," + str(slon) + "," + str(nlat) + "," + str(nlon) + ");" "way[highway=footway] (" + str(slat) + "," + str(slon) + "," + str(nlat) + "," + str(nlon) + ");" "way[foot=yes] (" + str(slat) + "," + str(slon) + "," + str(nlat) + "," + str(nlon) + ");" "way[footway=sidewalk] (" + str(slat) + "," + str(slon) + "," + str(nlat) + "," + str(nlon) + ");out");
+    result = api.query("way[highway=pedestrian] (" + str(slat) + "," + str(slon) + "," + str(nlat) + "," + str(nlon) + ");" "way[highway=footway] (" + str(slat) + "," + str(slon) + "," + str(nlat) + "," + str(nlon) + ");" "way[foot=yes] (" + str(slat) + "," + str(slon) + "," + str(nlat) + "," + str(nlon) + ");" "way[footway=sidewalk] (" + str(slat) + "," + str(slon) + "," + str(nlat) + "," + str(nlon) + ");out;")
     tempFootpaths = result.ways
-
     # tempTempFootpaths = [];
     # for way in tempFootpaths:
     #     if len(way.nodes)> 4:
@@ -125,6 +131,7 @@ def printFootpathsLineString(bb):
             lon1 = firstNode.lon
             lat2 = lastNode.lat
             lon2 = lastNode.lon
+            print (str(lat1) + " " + str(lon1));
             distance = dist(lat1, lon1, lat2, lon2)
             if distance >= MINPATHLENGTH:
                 posFootpaths.append(way)
