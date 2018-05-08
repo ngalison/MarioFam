@@ -56,7 +56,6 @@ def analyseRegion(coordinates, distance, count):
     boundingbox = requests.get(requestString);
     #Now separate into the list of coordinates
     try:
-        print("dank")
         featureList = boundingbox.json()['features']
     except ValueError:
         print("some queer stuff happened, run it again")
@@ -116,32 +115,7 @@ def printFootpathsLineString(bb):
     #     if len(way.nodes)> 4:
     #         tempTempFootpaths.append(way)
 
-    posFootpaths = []
-
-    #This section is here such that only footpaths of a certain length are returned
-    MINPATHLENGTH = 250 # The minimum path length in meters
-
-    # Run the length checker on decreasing minpathlength until posFootpaths is not empty
-    while not posFootpaths:
-        for way in tempFootpaths:
-            #length = len(way.nodes)
-            #nodes = way.nodes
-            nodes = way.get_nodes(resolve_missing = True)
-            length = len(nodes)
-            firstNode = nodes[0]
-            lastNode = nodes[length - 1]
-            lat1 = firstNode.lat
-            lon1 = firstNode.lon
-            lat2 = lastNode.lat
-            lon2 = lastNode.lon
-            print (str(lat1) + " " + str(lon1));
-            distance = dist(lat1, lon1, lat2, lon2)
-            if distance >= MINPATHLENGTH:
-                posFootpaths.append(way)
-        if not posFootpaths:
-            MINPATHLENGTH = MINPATHLENGTH / 2
-
-    randomSelection = random.choice(posFootpaths)
+    randomSelection = random.choice(tempFootpaths)
     footpaths = [randomSelection]
     result = "{\n"
     result += "\"type\": \"FeatureCollection\",\n"
@@ -154,9 +128,9 @@ def printFootpathsLineString(bb):
         result += "\"type\": \"LineString\",\n"
         result += "\"coordinates\": ["
         nodeCount = 0
-        for node in way.nodes:
+        for node in way.get_nodes(resolve_missing = True):
             result += "[" + str(node.lat) + "," + str(node.lon) + "]"
-            if nodeCount != len(way.nodes) - 1:
+            if nodeCount != len(way.get_nodes(resolve_missing = True)) - 1:
                 result += ", "
             nodeCount = nodeCount + 1
         result += "]\n"
