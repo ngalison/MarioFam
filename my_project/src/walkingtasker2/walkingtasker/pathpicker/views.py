@@ -56,6 +56,7 @@ def analyseRegion(coordinates, distance, count):
     boundingbox = requests.get(requestString);
     #Now separate into the list of coordinates
     try:
+        print("dank")
         featureList = boundingbox.json()['features']
     except ValueError:
         print("some queer stuff happened, run it again")
@@ -123,8 +124,10 @@ def printFootpathsLineString(bb):
     # Run the length checker on decreasing minpathlength until posFootpaths is not empty
     while not posFootpaths:
         for way in tempFootpaths:
-            length = len(way.nodes)
-            nodes = way.nodes
+            #length = len(way.nodes)
+            #nodes = way.nodes
+            nodes = way.get_nodes(resolve_missing = True)
+            length = len(nodes)
             firstNode = nodes[0]
             lastNode = nodes[length - 1]
             lat1 = firstNode.lat
