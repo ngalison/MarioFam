@@ -40,9 +40,12 @@ def main():
     val1, val2 = input("Enter the tuple you want entered: ").split()
     # create a database connection
     conn = create_connection(database)
-    insert_db(conn, val1, val2);
-    with conn:
-        select_all(conn)
+    cur = conn.cursor()
+    cur.execute("SELECT load_extension('mod-spatialite')")
+    cur.execute("SELECT InitSpatialMetaData()")
+    # insert_db(conn, val1, val2);
+    # with conn:
+    #     select_all(conn)
  
  
 if __name__ == '__main__':
