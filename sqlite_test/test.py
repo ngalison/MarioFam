@@ -35,14 +35,18 @@ def insert_db(conn, val1, val2):
     curr.execute("INSERT INTO TEST VALUES (?, ?)", (val1, val2))
 
 def main():
-    database = "test.db"
+    database = "paths.db"
     #value = input("Enter the tuple you want entered: ")
-    val1, val2 = input("Enter the tuple you want entered: ").split()
+    #val1, val2 = input("Enter the tuple you want entered: ").split()
     # create a database connection
     conn = create_connection(database)
+    conn.enable_load_extension(True)
     cur = conn.cursor()
-    cur.execute("SELECT load_extension('mod-spatialite')")
-    cur.execute("SELECT InitSpatialMetaData()")
+    cur.execute("SELECT load_extension('mod_spatialite')")
+
+    cur.execute("INSERT INTO paths VALUES (-1, 1, 1, GeomFromText('POINT(0.0 0.0)', 4326), GeomFromText('POINT(1.0 1.0)', 4326), GeomFromText('LINESTRING(-122.3169 47.6545, -122.3857 47.6559, -122.2983 47.6631)', 4326))")
+    conn.commit();
+    #cur.execute("SELECT InitSpatialMetaData()")
     # insert_db(conn, val1, val2);
     # with conn:
     #     select_all(conn)
